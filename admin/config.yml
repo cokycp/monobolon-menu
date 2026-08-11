@@ -1,8 +1,9 @@
 backend:
-  name: github
-  repo: TU-USUARIO-GITHUB/monobolon-menu
+  name: git-gateway
+  repo: cokycp/monobolon-menu
   branch: main
-  base_url: PEGAR_AQUI_LO_QUE_TE_DA_DECAPBRIDGE
+  identity_url: https://auth.decapbridge.com/sites/a43ca543-8d61-44bc-9078-25cc5aef35d7
+  gateway_url: https://gateway.decapbridge.com
 media_folder: images/uploads
 public_folder: /images/uploads
 locale: es
