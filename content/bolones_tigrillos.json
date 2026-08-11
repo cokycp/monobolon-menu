@@ -1,0 +1,329 @@
+{
+  "masas_bolones": [
+    {
+      "id": "bt.bolones.masas.verde",
+      "name": {
+        "es": "VERDE",
+        "en": "VERDE"
+      },
+      "desc": {
+        "es": "Masa de plátano verde en su punto natural, textura firme y sabor neutro — la base clásica del bolón.",
+        "en": "Dough made with natural-stage green plantain, firm texture and neutral flavor — the classic bolón base."
+      },
+      "footer": {
+        "es": "Sabor tradicional",
+        "en": "Traditional flavor"
+      },
+      "image": "images/masas/verde.jpg"
+    },
+    {
+      "id": "bt.bolones.masas.maduro",
+      "name": {
+        "es": "MADURO",
+        "en": "MADURO"
+      },
+      "desc": {
+        "es": "Masa de plátano en su punto maduro, más suave y jugosa, con un toque ligeramente dulce.",
+        "en": "Dough made with ripe-stage plantain, softer and juicier, with a slightly sweet touch."
+      },
+      "footer": {
+        "es": "Textura suave",
+        "en": "Softer texture"
+      },
+      "image": "images/masas/maduro.jpg"
+    },
+    {
+      "id": "bt.bolones.masas.pinton",
+      "name": {
+        "es": "PINTÓN",
+        "en": "PINTÓN"
+      },
+      "desc": {
+        "es": "Masa de plátano en su punto pintón, más firme y de sabor equilibrado, con trocitos dorados por dentro.",
+        "en": "Dough made with pintón-stage plantain, firmer texture and balanced flavor, with golden bits inside."
+      },
+      "footer": {
+        "es": "Textura firme",
+        "en": "Firmer texture"
+      },
+      "image": "images/masas/pinton.jpg"
+    }
+  ],
+  "precios_bolones": [
+    {
+      "id": "bt.bolones.precios.queso",
+      "name": {
+        "es": "Queso",
+        "en": "Cheese"
+      },
+      "entero": "$5.00",
+      "media": "$3.25"
+    },
+    {
+      "id": "bt.bolones.precios.mixto",
+      "name": {
+        "es": "Mixto",
+        "en": "Mixed"
+      },
+      "entero": "$7.35",
+      "media": "$4.60"
+    },
+    {
+      "id": "bt.bolones.precios.chicharron",
+      "name": {
+        "es": "Chicharrón",
+        "en": "Pork rind"
+      },
+      "entero": "$7.35",
+      "media": "$4.60"
+    }
+  ],
+  "tunea_bolon": [
+    {
+      "id": "bt.bolones.tunea.periqueado",
+      "name": {
+        "es": "Periqueado",
+        "en": "Scrambled egg bits"
+      },
+      "price": "$0.35"
+    },
+    {
+      "id": "bt.bolones.tunea.salsa-de-queso",
+      "name": {
+        "es": "Salsa de queso",
+        "en": "Cheese sauce"
+      },
+      "price": "$1.50"
+    },
+    {
+      "id": "bt.bolones.tunea.porcion-de-huevo",
+      "name": {
+        "es": "Porción de huevo",
+        "en": "Egg portion"
+      },
+      "price": "$1.80"
+    },
+    {
+      "id": "bt.bolones.tunea.guatita",
+      "name": {
+        "es": "Guatita",
+        "en": "Tripe stew"
+      },
+      "price": "$3.75"
+    },
+    {
+      "id": "bt.bolones.tunea.carne-pollo-mechado",
+      "name": {
+        "es": "Carne / pollo mechado",
+        "en": "Shredded beef / chicken"
+      },
+      "price": "$3.90"
+    },
+    {
+      "id": "bt.bolones.tunea.seco-de-carne-pollo-cerdo",
+      "name": {
+        "es": "Seco de carne / pollo / cerdo",
+        "en": "Beef / chicken / pork stew"
+      },
+      "price": "$4.84"
+    },
+    {
+      "id": "bt.bolones.tunea.bistec-de-higado-carne-pollo",
+      "name": {
+        "es": "Bistec de hígado / carne / pollo",
+        "en": "Liver / beef / chicken steak"
+      },
+      "price": "$4.24"
+    },
+    {
+      "id": "bt.bolones.tunea.salsa-de-camaron",
+      "name": {
+        "es": "Salsa de camarón",
+        "en": "Shrimp sauce"
+      },
+      "price": "$4.75"
+    }
+  ],
+  "masas_tigrillo": [
+    {
+      "id": "bt.tigrillo.masas.especial",
+      "name": {
+        "es": "ESPECIAL",
+        "en": "ESPECIAL"
+      },
+      "desc": {
+        "es": "Cremosa masa de plátano verde, al estilo batea con queso, leche y huevo.",
+        "en": "Creamy green plantain dough, batea-style, with cheese, milk and egg."
+      },
+      "footer": {
+        "es": "Mucho queso",
+        "en": "Extra cheesy"
+      },
+      "image": "images/masas/especial.jpg"
+    },
+    {
+      "id": "bt.tigrillo.masas.tradicional",
+      "name": {
+        "es": "TRADICIONAL",
+        "en": "TRADICIONAL"
+      },
+      "desc": {
+        "es": "Masa de maduro y pintón majado con queso rallado, un toque de cebolla, cilantro y huevo revuelto.",
+        "en": "Ripe and semi-ripe plantain mashed with grated cheese, a touch of onion, cilantro and scrambled egg."
+      },
+      "footer": {
+        "es": "Queso medio",
+        "en": "Mild cheese"
+      },
+      "image": "images/masas/tradicional.jpg"
+    },
+    {
+      "id": "bt.tigrillo.masas.de-la-casa",
+      "name": {
+        "es": "DE LA CASA",
+        "en": "HOUSE STYLE"
+      },
+      "desc": {
+        "es": "Masa de verde tipo puré con crema de leche, queso, cebolla, cilantro, aromatizado con hierbas.",
+        "en": "Puree-style green plantain with cream, cheese, onion, cilantro, seasoned with herbs."
+      },
+      "footer": {
+        "es": "Cremosa y aromática",
+        "en": "Creamy & aromatic"
+      },
+      "image": "images/masas/de-la-casa.jpg"
+    },
+    {
+      "id": "bt.tigrillo.masas.monochop",
+      "name": {
+        "es": "MONOCHOP",
+        "en": "MONOCHOP"
+      },
+      "desc": {
+        "es": "Tigrillo de plátano verde sin lácteos, salteado con cilantro, cebolla, huevo y chicharrón.",
+        "en": "Dairy-free green plantain tigrillo, sautéed with cilantro, onion, egg and crispy pork rind."
+      },
+      "footer": {
+        "es": "Sin queso",
+        "en": "No cheese"
+      },
+      "image": "images/masas/monochop.jpg"
+    }
+  ],
+  "precios_tigrillo": [
+    {
+      "id": "bt.tigrillo.precios.queso",
+      "name": {
+        "es": "Queso",
+        "en": "Cheese"
+      },
+      "price": "$4.50"
+    },
+    {
+      "id": "bt.tigrillo.precios.mixto",
+      "name": {
+        "es": "Mixto",
+        "en": "Mixed"
+      },
+      "price": "$5.85"
+    },
+    {
+      "id": "bt.tigrillo.precios.monochop",
+      "name": {
+        "es": "Monochop",
+        "en": "Monochop"
+      },
+      "price": "$5.85"
+    },
+    {
+      "id": "bt.tigrillo.precios.tigrillo-4x4-sampler-de-masas",
+      "name": {
+        "es": "Tigrillo 4x4 (sampler de masas)",
+        "en": "Tigrillo 4x4 (dough sampler)"
+      },
+      "price": "$9.45"
+    },
+    {
+      "id": "bt.tigrillo.precios.tigrillo-4x4-mixto",
+      "name": {
+        "es": "Tigrillo 4x4 Mixto",
+        "en": "Tigrillo 4x4 Mixed"
+      },
+      "price": "$11.70"
+    },
+    {
+      "id": "bt.tigrillo.precios.super-proteina",
+      "name": {
+        "es": "Súper Proteína",
+        "en": "Súper Proteína"
+      },
+      "price": "$9.45"
+    }
+  ],
+  "tunea_tigrillo": [
+    {
+      "id": "bt.tigrillo.tunea.periqueado",
+      "name": {
+        "es": "Periqueado",
+        "en": "Scrambled egg bits"
+      },
+      "price": "$0.35"
+    },
+    {
+      "id": "bt.tigrillo.tunea.salsa-de-queso",
+      "name": {
+        "es": "Salsa de queso",
+        "en": "Cheese sauce"
+      },
+      "price": "$1.50"
+    },
+    {
+      "id": "bt.tigrillo.tunea.porcion-de-huevo",
+      "name": {
+        "es": "Porción de huevo",
+        "en": "Egg portion"
+      },
+      "price": "$1.80"
+    },
+    {
+      "id": "bt.tigrillo.tunea.guatita",
+      "name": {
+        "es": "Guatita",
+        "en": "Tripe stew"
+      },
+      "price": "$3.75"
+    },
+    {
+      "id": "bt.tigrillo.tunea.carne-pollo-mechado",
+      "name": {
+        "es": "Carne / pollo mechado",
+        "en": "Shredded beef / chicken"
+      },
+      "price": "$3.90"
+    },
+    {
+      "id": "bt.tigrillo.tunea.seco-de-carne-pollo-cerdo",
+      "name": {
+        "es": "Seco de carne / pollo / cerdo",
+        "en": "Beef / chicken / pork stew"
+      },
+      "price": "$4.84"
+    },
+    {
+      "id": "bt.tigrillo.tunea.bistec-de-higado-carne-pollo",
+      "name": {
+        "es": "Bistec de hígado / carne / pollo",
+        "en": "Liver / beef / chicken steak"
+      },
+      "price": "$4.24"
+    },
+    {
+      "id": "bt.tigrillo.tunea.salsa-de-camaron",
+      "name": {
+        "es": "Salsa de camarón",
+        "en": "Shrimp sauce"
+      },
+      "price": "$4.75"
+    }
+  ]
+}

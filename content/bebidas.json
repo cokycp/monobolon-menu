@@ -1,0 +1,265 @@
+{
+  "frias": [
+    {
+      "id": "bebidas.frias.agua",
+      "name": {
+        "es": "Agua",
+        "en": "Water"
+      },
+      "price": "$1.50"
+    },
+    {
+      "id": "bebidas.frias.agua-mineral",
+      "name": {
+        "es": "Agua mineral",
+        "en": "Sparkling water"
+      },
+      "price": "$1.50"
+    },
+    {
+      "id": "bebidas.frias.gaseosas-original-light-zero-sprite-fuze-tea",
+      "name": {
+        "es": "Gaseosas (original, light, zero, sprite, fuze tea)",
+        "en": "Sodas (regular, light, zero, sprite, fuze tea)"
+      },
+      "price": "$1.80"
+    },
+    {
+      "id": "bebidas.frias.cerveza-club",
+      "name": {
+        "es": "Cerveza Club",
+        "en": "Club Beer"
+      },
+      "price": "$3.75"
+    },
+    {
+      "id": "bebidas.frias.tinto-de-verano",
+      "name": {
+        "es": "Tinto de Verano",
+        "en": "Tinto de Verano"
+      },
+      "price": "$5.75"
+    },
+    {
+      "id": "bebidas.frias.latte-frapeado",
+      "name": {
+        "es": "Latte frapeado",
+        "en": "Iced latte"
+      },
+      "price": "$2.85"
+    },
+    {
+      "id": "bebidas.frias.jugo-de-mora",
+      "name": {
+        "es": "Jugo de mora",
+        "en": "Blackberry juice"
+      },
+      "price": "$2.50"
+    },
+    {
+      "id": "bebidas.frias.jugo-de-frutas-tropicales",
+      "name": {
+        "es": "Jugo de frutas tropicales",
+        "en": "Tropical fruit juice"
+      },
+      "price": "$2.50"
+    },
+    {
+      "id": "bebidas.frias.jugo-de-guanabana",
+      "name": {
+        "es": "Jugo de guanábana",
+        "en": "Soursop juice"
+      },
+      "price": "$2.50"
+    },
+    {
+      "id": "bebidas.frias.jugo-de-guanamora",
+      "name": {
+        "es": "Jugo de guanamora",
+        "en": "Guanamora juice"
+      },
+      "price": "$2.50"
+    },
+    {
+      "id": "bebidas.frias.jugo-de-naranja",
+      "name": {
+        "es": "Jugo de naranja",
+        "en": "Orange juice"
+      },
+      "price": "$2.75"
+    },
+    {
+      "id": "bebidas.frias.batido-de-mora",
+      "name": {
+        "es": "Batido de mora",
+        "en": "Blackberry smoothie"
+      },
+      "price": "$3.00"
+    },
+    {
+      "id": "bebidas.frias.batido-de-naranjilla",
+      "name": {
+        "es": "Batido de naranjilla",
+        "en": "Naranjilla smoothie"
+      },
+      "price": "$3.00"
+    }
+  ],
+  "calientes": [
+    {
+      "id": "bebidas.calientes.cafe-americano",
+      "name": {
+        "es": "Café americano",
+        "en": "American coffee"
+      },
+      "price": "$1.75"
+    },
+    {
+      "id": "bebidas.calientes.cafe-americano-filtrado",
+      "name": {
+        "es": "Café americano filtrado",
+        "en": "Filtered American coffee"
+      },
+      "price": "$1.75"
+    },
+    {
+      "id": "bebidas.calientes.espresso",
+      "name": {
+        "es": "Espresso",
+        "en": "Espresso"
+      },
+      "price": "$0.95"
+    },
+    {
+      "id": "bebidas.calientes.te-anis-cedron-verde-toronjil-hierbaluisa-manzana-canela-manzanilla-manzanilla-miel",
+      "name": {
+        "es": "Té (anís, cedrón, verde, toronjil, hierbaluisa, manzana canela, manzanilla, manzanilla miel)",
+        "en": "Tea (anise, verbena, green, lemon balm, lemongrass, apple cinnamon, chamomile, honey chamomile)"
+      },
+      "price": "$1.50"
+    },
+    {
+      "id": "bebidas.calientes.mocaccino",
+      "name": {
+        "es": "Mocaccino",
+        "en": "Mocaccino"
+      },
+      "price": "$2.35"
+    },
+    {
+      "id": "bebidas.calientes.cortado",
+      "name": {
+        "es": "Cortado",
+        "en": "Cortado"
+      },
+      "price": "$2.25"
+    },
+    {
+      "id": "bebidas.calientes.capuccino",
+      "name": {
+        "es": "Capuccino",
+        "en": "Capuccino"
+      },
+      "price": "$2.25"
+    },
+    {
+      "id": "bebidas.calientes.chocolate-caliente",
+      "name": {
+        "es": "Chocolate caliente",
+        "en": "Hot chocolate"
+      },
+      "price": "$2.35"
+    }
+  ],
+  "cocteles_clasicos": [
+    {
+      "id": "bebidas.cocteles.mojito",
+      "name": {
+        "es": "Mojito",
+        "en": "Mojito"
+      },
+      "price": "$8.95",
+      "desc": {
+        "es": "Ron blanco, hierbabuena fresca machacada, lima, azúcar y un toque de soda. El clásico cubano que refresca cualquier noche.",
+        "en": "White rum, fresh muddled mint, lime, sugar and a splash of soda. The Cuban classic that cools down any night."
+      }
+    },
+    {
+      "id": "bebidas.cocteles.caipirinha",
+      "name": {
+        "es": "Caipirinha",
+        "en": "Caipirinha"
+      },
+      "price": "$8.95",
+      "desc": {
+        "es": "Cachaça brasileña macerada con limón y azúcar directamente en el vaso. Rústica, directa y con carácter.",
+        "en": "Brazilian cachaça muddled with lime and sugar right in the glass. Rustic, direct and full of character."
+      }
+    },
+    {
+      "id": "bebidas.cocteles.moscow-mule",
+      "name": {
+        "es": "Moscow Mule",
+        "en": "Moscow Mule"
+      },
+      "price": "$8.95",
+      "desc": {
+        "es": "Vodka, ginger beer picante y un chorro de lima, servido en su clásico jarro de cobre. Burbujeante y refrescante.",
+        "en": "Vodka, spicy ginger beer and a splash of lime, served in its classic copper mug. Bubbly and refreshing."
+      }
+    },
+    {
+      "id": "bebidas.cocteles.old-fashioned",
+      "name": {
+        "es": "Old Fashioned",
+        "en": "Old Fashioned"
+      },
+      "price": "$8.95",
+      "desc": {
+        "es": "Whisky bourbon, azúcar, bitter de angostura y una twist de naranja sobre hielo. El padre de todos los cócteles.",
+        "en": "Bourbon whiskey, sugar, angostura bitters and an orange twist over ice. The father of all cocktails."
+      }
+    },
+    {
+      "id": "bebidas.cocteles.negroni",
+      "name": {
+        "es": "Negroni",
+        "en": "Negroni"
+      },
+      "price": "$8.95",
+      "desc": {
+        "es": "Gin, Campari y vermouth rosso en partes iguales. Amargo, elegante y sin miedo a decirlo.",
+        "en": "Gin, Campari and rosso vermouth in equal parts. Bitter, elegant and unafraid to say so."
+      }
+    },
+    {
+      "id": "bebidas.cocteles.margarita",
+      "name": {
+        "es": "Margarita",
+        "en": "Margarita"
+      },
+      "price": "$8.95",
+      "desc": {
+        "es": "Tequila, Triple Sec y jugo de limón fresco, servida con o sin escarcha de sal. El clásico mexicano por excelencia.",
+        "en": "Tequila, Triple Sec and fresh lime juice, served with or without a salt rim. The Mexican classic, no explanation needed."
+      }
+    },
+    {
+      "id": "bebidas.cocteles.pina-colada",
+      "name": {
+        "es": "Piña Colada",
+        "en": "Piña Colada"
+      },
+      "price": "$8.95",
+      "desc": {
+        "es": "Ron blanco, crema de coco y jugo de piña, licuados con hielo hasta quedar cremosa. Playa en cada sorbo.",
+        "en": "White rum, coconut cream and pineapple juice, blended with ice until creamy. Beach in every sip."
+      }
+    }
+  ],
+  "frias_hero": {
+    "id": "bebidas.frias.hero_image",
+    "label": "Foto Jugos Naturales",
+    "image": "images/hero/jugos-naturales-monobolon.jpg"
+  }
+}

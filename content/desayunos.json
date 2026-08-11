@@ -1,0 +1,218 @@
+{
+  "masas": [
+    {
+      "id": "desayunos.masas.especial",
+      "name": {
+        "es": "ESPECIAL",
+        "en": "ESPECIAL"
+      },
+      "desc": {
+        "es": "Cremosa masa de plátano verde, al estilo batea con queso, leche y huevo.",
+        "en": "Creamy green plantain dough, batea-style, with cheese, milk and egg."
+      },
+      "footer": {
+        "es": "Mucho queso",
+        "en": "Extra cheesy"
+      },
+      "image": "images/masas/especial.jpg"
+    },
+    {
+      "id": "desayunos.masas.tradicional",
+      "name": {
+        "es": "TRADICIONAL",
+        "en": "TRADICIONAL"
+      },
+      "desc": {
+        "es": "Masa de maduro y pintón majado con queso rallado, un toque de cebolla, cilantro y huevo revuelto.",
+        "en": "Ripe and semi-ripe plantain mashed with grated cheese, a touch of onion, cilantro and scrambled egg."
+      },
+      "footer": {
+        "es": "Queso medio",
+        "en": "Mild cheese"
+      },
+      "image": "images/masas/tradicional.jpg"
+    },
+    {
+      "id": "desayunos.masas.de-la-casa",
+      "name": {
+        "es": "DE LA CASA",
+        "en": "HOUSE STYLE"
+      },
+      "desc": {
+        "es": "Masa de verde tipo puré con crema de leche, queso, cebolla, cilantro, aromatizado con hierbas.",
+        "en": "Puree-style green plantain with cream, cheese, onion, cilantro, seasoned with herbs."
+      },
+      "footer": {
+        "es": "Cremosa y aromática",
+        "en": "Creamy & aromatic"
+      },
+      "image": "images/masas/de-la-casa.jpg"
+    },
+    {
+      "id": "desayunos.masas.monochop",
+      "name": {
+        "es": "MONOCHOP",
+        "en": "MONOCHOP"
+      },
+      "desc": {
+        "es": "Tigrillo de plátano verde sin lácteos, salteado con cilantro, cebolla, huevo y chicharrón.",
+        "en": "Dairy-free green plantain tigrillo, sautéed with cilantro, onion, egg and crispy pork rind."
+      },
+      "footer": {
+        "es": "Sin queso",
+        "en": "No cheese"
+      },
+      "image": "images/masas/monochop.jpg"
+    }
+  ],
+  "desayuno_picaditas_combo": [
+    {
+      "id": "desayunos.picaditas_combo.2-tortillas-verde-o-yuca",
+      "name": {
+        "es": "2 Tortillas (Verde o Yuca)",
+        "en": "2 Tortillas (Green plantain or Yuca)"
+      },
+      "price": "$7.90"
+    },
+    {
+      "id": "desayunos.picaditas_combo.duo-verde-y-yuca",
+      "name": {
+        "es": "Duo (Verde y Yuca)",
+        "en": "Duo (Green plantain & Yuca)"
+      },
+      "price": "$7.90"
+    },
+    {
+      "id": "desayunos.picaditas_combo.2-croquetas-yuca-mixta",
+      "name": {
+        "es": "2 Croquetas (Yuca Mixta)",
+        "en": "2 Croquettes (Mixed Yuca)"
+      },
+      "price": "$8.90"
+    }
+  ],
+  "desayunos": [
+    {
+      "id": "desayunos.tipo.desayuno-monobolon",
+      "name": {
+        "es": "DESAYUNO MONOBOLÓN",
+        "en": "MONOBOLÓN BREAKFAST"
+      },
+      "precios": [
+        {
+          "id": "desayunos.tipo.desayuno-monobolon.precios.queso",
+          "name": {
+            "es": "Queso",
+            "en": "Cheese"
+          },
+          "price": "$10.15"
+        },
+        {
+          "id": "desayunos.tipo.desayuno-monobolon.precios.mixto",
+          "name": {
+            "es": "Mixto",
+            "en": "Mixed"
+          },
+          "price": "$12.50"
+        },
+        {
+          "id": "desayunos.tipo.desayuno-monobolon.precios.chicharron",
+          "name": {
+            "es": "Chicharrón",
+            "en": "Pork rind"
+          },
+          "price": "$12.50"
+        },
+        {
+          "id": "desayunos.tipo.desayuno-monobolon.precios.queso-completo",
+          "name": {
+            "es": "Queso (Completo)",
+            "en": "Cheese (Full)"
+          },
+          "price": "$14.30"
+        },
+        {
+          "id": "desayunos.tipo.desayuno-monobolon.precios.mixto-completo",
+          "name": {
+            "es": "Mixto (Completo)",
+            "en": "Mixed (Full)"
+          },
+          "price": "$16.65"
+        },
+        {
+          "id": "desayunos.tipo.desayuno-monobolon.precios.chicharron-completo",
+          "name": {
+            "es": "Chicharrón (Completo)",
+            "en": "Pork rind (Full)"
+          },
+          "price": "$16.65"
+        }
+      ]
+    },
+    {
+      "id": "desayunos.tipo.desayuno-trigrillo",
+      "name": {
+        "es": "DESAYUNO TRIGRILLO",
+        "en": "TRIGRILLO BREAKFAST"
+      },
+      "precios": [
+        {
+          "id": "desayunos.tipo.desayuno-trigrillo.precios.queso",
+          "name": {
+            "es": "Queso",
+            "en": "Cheese"
+          },
+          "price": "$9.40"
+        },
+        {
+          "id": "desayunos.tipo.desayuno-trigrillo.precios.mixto",
+          "name": {
+            "es": "Mixto",
+            "en": "Mixed"
+          },
+          "price": "$10.75"
+        },
+        {
+          "id": "desayunos.tipo.desayuno-trigrillo.precios.monochop",
+          "name": {
+            "es": "Monochop",
+            "en": "Monochop"
+          },
+          "price": "$10.75"
+        },
+        {
+          "id": "desayunos.tipo.desayuno-trigrillo.precios.queso-completo-carne-pollo-mechado",
+          "name": {
+            "es": "Queso Completo (carne/pollo mechado)",
+            "en": "Cheese Full (with shredded beef/chicken)"
+          },
+          "price": "$13.55"
+        },
+        {
+          "id": "desayunos.tipo.desayuno-trigrillo.precios.mixto-completo-carne-pollo-mechado",
+          "name": {
+            "es": "Mixto Completo (carne/pollo mechado)",
+            "en": "Mixed Full (with shredded beef/chicken)"
+          },
+          "price": "$14.90"
+        },
+        {
+          "id": "desayunos.tipo.desayuno-trigrillo.precios.monochop-completo-carne-pollo-mechado",
+          "name": {
+            "es": "Monochop Completo (carne/pollo mechado)",
+            "en": "Monochop Full (with shredded beef/chicken)"
+          },
+          "price": "$14.90"
+        },
+        {
+          "id": "desayunos.tipo.desayuno-trigrillo.precios.camaron",
+          "name": {
+            "es": "Camarón",
+            "en": "Shrimp"
+          },
+          "price": "$15.65"
+        }
+      ]
+    }
+  ]
+}

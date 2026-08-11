@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>MonoBolón — Menú Digital</title>
+<meta content="MonoBolón — El auténtico sabor guayaco. Menú digital." name="description"/>
+<link href="https://fonts.googleapis.com/" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@1,500;1,700&display=swap");
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --black:#0a0a08;--dark:#111210;--green:#3f6b47;--green-dark:#1f3d27;
+  --gold:#d4af62;--gold-outline:#c9a227;--white:#f0ede0;--gray:#8a8a7c;--card-bg:#151713;
+}
+body{background:var(--black);color:var(--white);font-family:'Barlow',sans-serif;min-height:100vh;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+.hidden{display:none!important}
+
+/* ===== LANGUAGE VISIBILITY ===== */
+[data-lang]{display:none}
+body[data-lang-active="es"] [data-lang="es"]{display:inline}
+body[data-lang-active="en"] [data-lang="en"]{display:inline}
+body[data-lang-active="es"] div[data-lang="es"],
+body[data-lang-active="en"] div[data-lang="en"]{display:block}
+body[data-lang-active="es"] span.block[data-lang="es"],
+body[data-lang-active="en"] span.block[data-lang="en"]{display:block}
+
+/* ===== GATES ===== */
+.gate{
+  position:fixed;inset:0;z-index:1000;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:40px 24px;text-align:center;overflow-y:auto;
+  background-image:linear-gradient(rgba(8,10,7,.80),rgba(6,8,5,.90)), url('images/backgrounds/hojas-verdes.jpg');
+  background-size:cover;background-position:center;
+  transition:opacity .5s ease, visibility .5s ease;
+}
+.gate.hidden{opacity:0;visibility:hidden;pointer-events:none;position:fixed;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.gate-logo-img{width:170px;margin:0 auto 18px;filter:drop-shadow(0 4px 18px rgba(0,0,0,.5));position:relative;z-index:2;opacity:0;animation:fadeUp .7s ease both .05s;}
+.gate-eyebrow{
+  font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:11px;letter-spacing:.35em;
+  color:var(--gold);text-transform:uppercase;margin-bottom:16px;position:relative;z-index:2;
+  opacity:0;animation:fadeUp .7s ease both .12s;
+}
+.gate-instruction{
+  font-family:'Playfair Display',serif;font-style:italic;font-weight:700;
+  font-size:clamp(1.15rem,4.5vw,1.6rem);color:var(--white);
+  margin-bottom:24px;position:relative;z-index:2;
+  opacity:0;animation:fadeUp .7s ease both .2s;
+}
+.gate-divider{width:44px;height:1px;background:var(--gold);margin:0 auto 26px;opacity:.6;position:relative;z-index:2;opacity:0;animation:fadeUp .7s ease both .28s;}
+.gate-options{display:flex;flex-direction:column;gap:14px;width:100%;max-width:360px;position:relative;z-index:2;opacity:0;animation:fadeUp .7s ease both .36s;}
+.gate-btn{
+  background:rgba(10,10,8,.35);border:1px solid rgba(212,175,98,.45);
+  padding:16px 22px;cursor:pointer;color:var(--white);
+  font-family:'Barlow',sans-serif;font-weight:600;font-size:.94rem;letter-spacing:.02em;
+  transition:all .3s ease;position:relative;overflow:hidden;border-radius:3px;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+}
+.gate-btn::before{content:'';position:absolute;inset:0;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .35s ease;z-index:-1;}
+.gate-btn:hover{color:#1a1508;border-color:var(--gold);}
+.gate-btn:hover::before{transform:scaleX(1);}
+.gate-btn .btn-main{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.15rem;letter-spacing:.06em;text-transform:uppercase;}
+.gate-btn .btn-sub{display:block;font-family:'Playfair Display',serif;font-style:italic;font-size:.78rem;font-weight:500;letter-spacing:.02em;color:rgba(212,175,98,.85);transition:color .3s;}
+.gate-btn:hover .btn-sub{color:rgba(26,21,8,.8);}
+.gate-tagline{margin-top:34px;font-family:'Playfair Display',serif;font-style:italic;font-weight:500;font-size:.82rem;letter-spacing:.03em;color:rgba(240,237,224,.5);position:relative;z-index:2;opacity:0;animation:fadeUp .7s ease both .48s;}
+.gate-back{margin-top:18px;background:none;border:none;color:rgba(240,237,224,.55);font-family:'Barlow',sans-serif;font-size:.78rem;letter-spacing:.05em;cursor:pointer;text-decoration:underline;position:relative;z-index:2;}
+
+/* ===== TOP CONTROLS (lang + start over) ===== */
+#app{display:none;padding-bottom:70px;}
+.topctl{
+  position:sticky;top:0;z-index:110;display:flex;justify-content:center;gap:8px;
+  padding:8px 14px;background:rgba(10,10,8,.95);backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(63,107,71,.3);font-size:.68rem;
+}
+.topctl button, .topctl a{
+  cursor:pointer;color:var(--white);background:none;border:1px solid rgba(255,255,255,.15);
+  padding:5px 12px;border-radius:2px;font-weight:700;font-family:'Barlow Condensed',sans-serif;
+  letter-spacing:.1em;text-decoration:none;text-transform:uppercase;
+}
+.topctl button.active{background:var(--green);border-color:var(--green);}
+.topctl a:hover{border-color:var(--gold);color:var(--gold);}
+
+/* ===== COVER (per-menu header) ===== */
+.cover{
+  position:relative;overflow:hidden;padding:56px 20px 34px;text-align:center;
+  background-image:linear-gradient(rgba(8,10,7,.72),rgba(6,8,5,.85)), url('images/backgrounds/hojas-verdes.jpg');
+  background-size:cover;background-position:center;
+  border-bottom:1px solid rgba(63,107,71,.35);
+}
+.cover::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 15% 85%,rgba(0,0,0,.25) 0%,transparent 60%);}
+.cover-inner{position:relative;z-index:2;max-width:520px;margin:0 auto;}
+.cover-eyebrow{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:11px;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;margin-bottom:10px;}
+.cover-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(46px,13vw,74px);letter-spacing:.02em;line-height:.95;}
+.cover-accent{font-family:'Playfair Display',serif;font-style:italic;font-weight:500;font-size:clamp(1.2rem,4.5vw,1.6rem);color:var(--gold);margin-top:6px;}
+.cover-tag{font-size:13px;color:var(--gray);margin-top:12px;letter-spacing:.02em;}
+.cover-logo-sm{width:120px;margin:18px auto 0;opacity:.92;}
+
+/* ===== NAV PILLS ===== */
+.nav{position:sticky;top:37px;z-index:100;background:rgba(10,10,8,.97);backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(63,107,71,.35);padding:0 16px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;}
+.nav::-webkit-scrollbar{display:none}
+.nav-inner{display:flex;gap:0;min-width:max-content;margin:0 auto}
+.nav-btn{background:none;border:none;color:#666;font-family:'Barlow Condensed',sans-serif;font-weight:900;
+  font-size:13px;letter-spacing:.13em;padding:13px 15px;cursor:pointer;position:relative;transition:color .25s;
+  white-space:nowrap;text-decoration:none;display:inline-block;}
+.nav-btn::after{content:'';position:absolute;bottom:0;left:15px;right:15px;height:2px;background:var(--gold);transform:scaleX(0);transition:transform .25s;}
+.nav-btn.active,.nav-btn:hover{color:var(--white)}
+.nav-btn.active::after{transform:scaleX(1)}
+
+/* ===== SECTIONS ===== */
+.section{padding:44px 20px 20px;max-width:480px;margin:0 auto}
+.section-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(34px,9vw,52px);
+  letter-spacing:.02em;line-height:1;margin-bottom:22px;position:relative;display:inline-block;}
+.section-title .accent{color:var(--gold);}
+.section-title::after{content:'';display:block;height:2px;background:linear-gradient(90deg,var(--gold),transparent);margin-top:6px;width:100%;}
+.section-note{text-align:center;padding:13px 16px;border:1px dashed rgba(212,175,98,.4);margin-bottom:16px;
+  font-size:12.5px;color:var(--gold);letter-spacing:.04em;background:rgba(212,175,98,.06);border-radius:3px;}
+.tax-note{text-align:center;padding:8px 20px;font-family:'Barlow Condensed',sans-serif;font-size:10.5px;letter-spacing:.14em;color:rgba(255,255,255,.2);text-transform:uppercase;border-top:1px solid rgba(255,255,255,.05);}
+.divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,98,.35),transparent);margin:6px 0 30px}
+
+/* DISH CARD */
+.dish-card{background:var(--card-bg);border:1px solid rgba(255,255,255,.07);border-radius:8px;margin-bottom:18px;
+  overflow:hidden;display:flex;min-height:120px;transition:border-color .25s,box-shadow .25s;cursor:pointer;position:relative;
+  box-shadow:0 4px 22px rgba(0,0,0,.5);}
+.dish-card:hover{border-color:rgba(212,175,98,.5);box-shadow:0 6px 30px rgba(212,175,98,.12);}
+.dish-card.expanded{border-color:rgba(212,175,98,.7);}
+.dish-img{width:84px;min-width:84px;background:#1a1a16;position:relative;overflow:hidden;}
+.dish-img img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:transform .4s ease;}
+.dish-card:hover .dish-img img,.dish-card.expanded .dish-img img{transform:scale(1.07);}
+.dish-img::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 55%,rgba(0,0,0,.45) 100%);pointer-events:none;}
+.dish-body{padding:11px 12px 11px 13px;flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:5px;min-width:0;}
+.dish-name{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:19px;color:var(--white);line-height:1.1;}
+.dish-desc{font-size:11.5px;color:#999;line-height:1.5;display:block;margin-top:4px;border-top:1px solid rgba(255,255,255,.06);padding-top:7px;}
+.dish-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;gap:6px;}
+.dish-price small{font-size:10.5px;color:var(--gray);font-weight:500;font-style:italic;}
+.dish-tag{position:absolute;top:8px;left:0;background:var(--green);font-family:'Barlow Condensed',sans-serif;font-weight:700;
+  font-size:9px;letter-spacing:.1em;padding:3px 8px 3px 6px;text-transform:uppercase;z-index:2;border-radius:0 2px 2px 0;}
+
+/* MASA HERO */
+.masa-hero{width:88%;max-width:320px;margin:0 auto 18px;aspect-ratio:4/5;background:#1a1a16;border-radius:4px;overflow:hidden;position:relative;}
+.masa-hero img{width:100%;height:100%;object-fit:cover;object-position:center;}
+
+/* GROUP TITLES */
+.toppings-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:22px;letter-spacing:.2em;color:var(--gold);margin-bottom:5px;text-align:center;}
+.toppings-sub{text-align:center;font-size:11.5px;color:#888;margin-bottom:16px;letter-spacing:.06em;}
+
+/* FF CARD */
+.ff-card{background:var(--card-bg);border:1px solid rgba(255,255,255,.05);border-radius:4px;overflow:hidden;margin-bottom:14px;}
+.ff-img{width:100%;aspect-ratio:4/5;background:#1e1c18;overflow:hidden;}
+.ff-img img{width:100%;height:100%;object-fit:cover;object-position:center;}
+.ff-img.landscape{aspect-ratio:3/2;}
+.ff-body{padding:13px 13px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+.ff-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;}
+.ff-desc{font-size:11px;color:#888;line-height:1.5;margin-top:3px;}
+.ff-price{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:22px;color:var(--gold);white-space:nowrap;flex-shrink:0;}
+
+/* 2COL LIST */
+.drinks-cols{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:6px;}
+.drink-category{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:13px;letter-spacing:.18em;color:var(--black);background:var(--gold);padding:4px 9px;display:inline-block;margin-bottom:9px;}
+.drink-group{margin-bottom:14px;}
+.drink-item{font-size:12px;color:#888;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;gap:6px;}
+.drink-item b{color:var(--gold);font-weight:700;font-size:11.5px;white-space:nowrap;}
+
+/* DESC LIST */
+.desc-list .item{margin-bottom:12px;}
+.desc-list .name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:var(--white);}
+.desc-list .sub{font-size:11.5px;color:#888;font-style:italic;margin-top:2px;}
+
+/* SPECIAL / SB SLIDES */
+.special-section{background:#000;padding:16px 0 34px;}
+.special-head{text-align:center;padding:18px 20px 6px;}
+.sb-h1{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(30px,8vw,44px);color:var(--gold);letter-spacing:.03em;}
+.sb-legend{font-size:12px;color:#999;max-width:380px;margin:8px auto 0;line-height:1.6;}
+.sb-slide{position:relative;padding:0;margin:14px 20px;border-radius:10px;overflow:hidden;background:#0e0f0c;border:1px solid rgba(212,175,98,.2);max-width:440px;margin-left:auto;margin-right:auto;}
+.sb-photo{width:100%;aspect-ratio:4/5;overflow:hidden;}
+.sb-photo img{width:100%;height:100%;object-fit:cover;object-position:center;}
+.sb-content{padding:20px 20px 24px;position:relative;background:radial-gradient(ellipse at 30% 0%,rgba(63,107,71,.25),transparent 70%);}
+.sb-badge{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:14px;color:var(--gold);border:1px solid rgba(212,175,98,.4);padding:4px 10px;border-radius:3px;margin-bottom:12px;}
+.sb-badge-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+.sb-badge-row .sb-badge{margin-bottom:0;}
+.upsell-badge{position:relative;display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(212,175,98,.22),rgba(212,175,98,.08));border:1px solid var(--gold);color:var(--gold);font-family:'Barlow',sans-serif;font-weight:700;font-size:11px;letter-spacing:.02em;padding:5px 10px 5px 9px;border-radius:20px;overflow:hidden;box-shadow:0 0 10px rgba(212,175,98,.35);animation:upsellPulse 2.4s ease-in-out infinite;}
+.upsell-badge::after{content:'';position:absolute;top:0;left:-60%;width:35%;height:100%;background:linear-gradient(120deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:upsellShine 2.8s ease-in-out infinite;}
+.upsell-icon{font-size:10px;line-height:1;}
+@keyframes upsellPulse{0%,100%{box-shadow:0 0 8px rgba(212,175,98,.3);}50%{box-shadow:0 0 16px rgba(212,175,98,.65);}}
+@keyframes upsellShine{0%{left:-60%;}60%{left:130%;}100%{left:130%;}}
+.sb-rule{width:44px;height:2px;background:var(--gold);margin:10px 0;}
+.sb-desc{font-size:12.5px;color:#aaa;line-height:1.65;}
+.sb-lines{margin-top:4px;}
+.sb-line{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.07);}
+.sb-line:last-child{border-bottom:none;}
+.sb-line span{font-size:12.5px;color:#bbb;line-height:1.4;}
+.sb-line b{color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:13.5px;white-space:nowrap;}
+
+/* EXTRAS */
+.extras-banner{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(24px,7vw,36px);letter-spacing:.05em;text-align:center;margin-bottom:5px;color:var(--gold);}
+.extras-list{display:flex;flex-direction:column;gap:1px;margin-bottom:6px;border:1px solid rgba(255,255,255,.05);}
+.extra-item{display:flex;justify-content:space-between;align-items:center;padding:11px 15px;background:var(--card-bg);font-size:13px;}
+.extra-item:nth-child(even){background:#111310;}
+.extra-name{color:#bbb;}
+.extra-price{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:16px;color:var(--gold);}
+
+/* COCKTAIL CARDS */
+.cocktail-card{background:var(--card-bg);border:1px solid rgba(212,175,98,.18);border-radius:8px;padding:16px 18px;margin-bottom:14px;}
+.cocktail-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:6px;}
+.cocktail-name{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:20px;color:var(--white);letter-spacing:.02em;}
+.cocktail-price{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;color:var(--gold);white-space:nowrap;}
+.cocktail-desc{font-size:12.5px;color:#999;line-height:1.6;margin-bottom:10px;}
+.cocktail-ings{display:flex;flex-wrap:wrap;gap:6px;}
+.ing-tag{font-family:'Barlow',sans-serif;font-size:10px;font-weight:600;letter-spacing:.03em;color:var(--gold);
+  background:rgba(212,175,98,.1);border:1px solid rgba(212,175,98,.3);padding:3px 9px;border-radius:20px;text-transform:uppercase;}
+
+/* PRICE TABLE (bolones) */
+.price-table{border:1px solid rgba(255,255,255,.07);border-radius:6px;overflow:hidden;margin-bottom:6px;}
+.price-table-head{display:grid;grid-template-columns:1fr 70px 70px;padding:8px 14px;background:rgba(212,175,98,.12);
+  font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:11px;letter-spacing:.1em;color:var(--gold);text-align:right;}
+.price-table-head span:first-child{text-align:left;}
+.price-table-row{display:grid;grid-template-columns:1fr 70px 70px;padding:11px 14px;background:var(--card-bg);
+  font-size:13px;color:#ccc;text-align:right;border-top:1px solid rgba(255,255,255,.04);}
+.price-table-row:nth-child(even){background:#111310;}
+.pt-name{text-align:left;color:#ddd;}
+.pt-val{font-family:'Barlow Condensed',sans-serif;font-weight:900;color:var(--gold);}
+
+/* SUBVIEW TOGGLE (bolones/tigrillo) */
+.subview.hidden{display:none;}
+
+/* BIG BOLONES/TIGRILLO CHOICE BUTTONS */
+.subchoice{display:flex;gap:10px;max-width:480px;margin:0 auto;padding:20px 20px 4px;}
+.subchoice-btn{
+  flex:1;background:var(--card-bg);border:1px solid rgba(212,175,98,.3);border-radius:8px;
+  padding:16px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;
+  transition:all .25s ease;
+}
+.subchoice-btn .sc-name{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:19px;letter-spacing:.08em;color:var(--white);}
+.subchoice-btn .sc-sub{font-size:11px;color:var(--gray);letter-spacing:.02em;}
+.subchoice-btn.active{background:rgba(212,175,98,.14);border-color:var(--gold);box-shadow:0 4px 18px rgba(212,175,98,.15);}
+.autor-soon{max-width:520px;margin:40px auto;padding:26px 20px;text-align:center;font-family:'Barlow',sans-serif;font-style:italic;font-size:14px;color:var(--gray);border:1px dashed rgba(212,175,98,.35);border-radius:10px;line-height:1.6;}
+.subchoice-btn.active .sc-name{color:var(--gold);}
+.subchoice-btn:hover{border-color:var(--gold);}
+
+
+
+
+/* BADGES */
+.badges{border-top:1px solid rgba(63,107,71,.3);margin-top:8px;padding:28px 18px;display:flex;justify-content:center;gap:32px;flex-wrap:wrap;text-align:center;background:var(--card-bg);}
+.badge{max-width:150px;}
+.badge .bicon{font-size:1rem;margin-bottom:7px;color:var(--gold);}
+.badge .blabel{font-family:'Barlow',sans-serif;font-weight:600;font-size:.74rem;letter-spacing:.01em;color:var(--white);line-height:1.4;}
+
+/* MANIFESTO */
+.manifesto-section{background:radial-gradient(ellipse at 80% 30%,#132817 0%,var(--black) 60%);padding:54px 26px;text-align:center;position:relative;overflow:hidden;}
+.manifesto-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(26px,7vw,40px);letter-spacing:.1em;margin-bottom:26px;position:relative;z-index:1;}
+.manifesto-p{font-size:13.5px;line-height:1.85;color:#aaa;margin-bottom:18px;position:relative;z-index:1;max-width:380px;margin-left:auto;margin-right:auto;}
+.manifesto-logo{margin-top:34px;position:relative;z-index:1;}
+.manifesto-logo img{width:130px;margin:0 auto;filter:drop-shadow(0 0 16px rgba(212,175,98,.2));}
+.manifesto-logo .ml-sub{font-size:9px;letter-spacing:.28em;color:#555;margin-top:8px;}
+
+/* FOOTER */
+footer.site-footer{padding:36px 20px 90px;text-align:center;}
+.site-footer img{width:130px;margin:0 auto 10px;}
+.site-footer .tag{font-size:10.5px;letter-spacing:2.3px;color:var(--gray);}
+.site-footer .note{font-size:10px;color:var(--gray);opacity:.7;margin-top:12px;}
+
+/* FADE UP */
+.fade-up{opacity:0;transform:translateY(18px);transition:opacity .5s ease,transform .5s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--black)}
+::-webkit-scrollbar-thumb{background:var(--green-dark);border-radius:2px}
+
+/* ===== FLOATING MENU SWITCHER (speed-dial) ===== */
+.fab-wrap{position:fixed;right:18px;bottom:18px;z-index:900;display:flex;flex-direction:column;align-items:flex-end;gap:10px;}
+.fab-wrap.hidden{display:none;}
+.fab-options{display:flex;flex-direction:column;gap:8px;align-items:flex-end;}
+.fab-option{
+  background:var(--card-bg);border:1px solid rgba(212,175,98,.4);color:var(--white);
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:.08em;
+  padding:10px 16px;border-radius:22px;cursor:pointer;white-space:nowrap;box-shadow:0 6px 18px rgba(0,0,0,.4);
+  opacity:0;transform:translateY(10px) scale(.95);transition:opacity .22s ease,transform .22s ease;pointer-events:none;
+  text-transform:uppercase;
+}
+.fab-wrap.open .fab-option{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;}
+.fab-option:hover{border-color:var(--gold);color:var(--gold);}
+.fab-main{
+  background:var(--gold);color:#1a1508;border:none;width:auto;min-width:56px;height:56px;border-radius:28px;
+  padding:0 18px;cursor:pointer;display:flex;align-items:center;gap:8px;
+  font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:13px;letter-spacing:.06em;
+  box-shadow:0 8px 26px rgba(0,0,0,.4);transition:transform .2s ease;text-transform:uppercase;
+}
+.fab-main:hover{transform:translateY(-2px);}
+.fab-main .chev{transition:transform .25s ease;font-size:11px;}
+.fab-wrap.open .fab-main .chev{transform:rotate(180deg);}
+
+.backtop{position:fixed;left:18px;bottom:18px;background:var(--green);color:var(--white);width:38px;height:38px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,.25);text-decoration:none;font-size:1rem;
+  opacity:0;pointer-events:none;transition:opacity .2s;z-index:900;}
+.backtop.show{opacity:1;pointer-events:auto;}
+
+@media (max-width:600px){ .badges{gap:20px;padding:22px 14px;} }
+</style>
+</head>
+<body data-lang-active="es">
+<!-- ============ GATE 1: IDIOMA ============ -->
+<div class="gate" id="gate-lang">
+<img alt="MonoBolón" class="gate-logo-img" src="images/logo/monobolon.png"/>
+<div class="gate-eyebrow">Jama Guayaca &amp; Drinks</div>
+<div class="gate-instruction">Selecciona idioma · Select language</div>
+<div class="gate-divider"></div>
+<div class="gate-options">
+<button class="gate-btn" onclick="selectLang('es')">
+<span class="btn-main">Español</span>
+<span class="btn-sub">Continuar en español</span>
+</button>
+<button class="gate-btn" onclick="selectLang('en')">
+<span class="btn-main">English</span>
+<span class="btn-sub">Continue in English</span>
+</button>
+</div>
+<div class="gate-tagline">El auténtico sabor guayaco</div>
+</div>
+<!-- ============ GATE 2: MENÚ ============ -->
+<div class="gate hidden" id="gate-menu">
+<img alt="MonoBolón" class="gate-logo-img" src="images/logo/monobolon.png"/>
+<div class="gate-eyebrow">Jama Guayaca &amp; Drinks</div>
+<div class="gate-instruction"><span data-lang="es">¿Qué menú quieres ver?</span><span data-lang="en">Which menu would you like to see?</span></div>
+<div class="gate-divider"></div>
+<div class="gate-options">
+<button class="gate-btn" onclick="selectMenu('bolones-tigrillos')">
+<span class="btn-main">Bolones &amp; Tigrillos</span>
+<span class="btn-sub"><span data-lang="es">Elige masa, tamaño y relleno</span><span data-lang="en">Choose dough, size &amp; filling</span></span>
+</button>
+<button class="gate-btn" onclick="selectMenu('desayunos')">
+<span class="btn-main"><span data-lang="es">Desayunos</span><span data-lang="en">Breakfast</span></span>
+<span class="btn-sub"><span data-lang="es">Masas, bolones &amp; tigrillos</span><span data-lang="en">Doughs, bolones &amp; tigrillos</span></span>
+</button>
+<button class="gate-btn" onclick="selectMenu('fuertes')">
+<span class="btn-main"><span data-lang="es">Platos Fuertes</span><span data-lang="en">Main Dishes</span></span>
+<span class="btn-sub"><span data-lang="es">Moro, seco, bandera &amp; más</span><span data-lang="en">Moro, stews, bandera &amp; more</span></span>
+</button>
+<button class="gate-btn" onclick="selectMenu('picadas')">
+<span class="btn-main"><span data-lang="es">Picadas</span><span data-lang="en">Bites</span></span>
+<span class="btn-sub"><span data-lang="es">Para compartir con un trago</span><span data-lang="en">Perfect for sharing</span></span>
+</button>
+<button class="gate-btn" onclick="selectMenu('bebidas')">
+<span class="btn-main"><span data-lang="es">Bebidas</span><span data-lang="en">Drinks</span></span>
+<span class="btn-sub"><span data-lang="es">Jugos, batidos &amp; café</span><span data-lang="en">Juices, smoothies &amp; coffee</span></span>
+</button>
+</div>
+<button class="gate-back" onclick="backToLang()"><span data-lang="es">← Cambiar idioma</span><span data-lang="en">← Change language</span></button>
+<div class="gate-tagline">El auténtico sabor guayaco</div>
+</div>
+<!-- ============ APP ============ -->
+<div id="app">
+<div class="topctl">
+<button id="langEsBtn" onclick="setLang('es')">ES</button>
+<button id="langEnBtn" onclick="setLang('en')">EN</button>
+<a onclick="startOver()"><span data-lang="es">Elegir de nuevo</span><span data-lang="en">Start over</span></a>
+</div>
+<section class="hidden" id="menu-bolones-tigrillos">
+<div class="cover">
+<div class="cover-inner">
+<div class="cover-eyebrow">Jama Guayaca &amp; Drinks</div>
+<div class="cover-title">Bolones &amp; Tigrillos</div>
+<div class="cover-accent"><span data-lang="es">Elige tu masa, tu tamaño y tu relleno</span><span data-lang="en">Choose your dough, size and filling</span></div>
+<img alt="MonoBolón" class="cover-logo-sm" src="images/logo/monobolon.png"/>
+</div>
+</div>
+<div class="subchoice">
+<button class="subchoice-btn active" data-sub="bolones" onclick="showSub(this,'bolones')">
+<span class="sc-name">BOLONES</span>
+<span class="sc-sub"><span data-lang="es">Monobolón clásico</span><span data-lang="en">Classic Monobolón</span></span>
+</button>
+<button class="subchoice-btn" data-sub="tigrillo" onclick="showSub(this,'tigrillo')">
+<span class="sc-name">TIGRILLO</span>
+<span class="sc-sub"><span data-lang="es">Mezcla salteada</span><span data-lang="en">Sautéed mix</span></span>
+</button>
+</div>
+<main>
+<!-- ===== SUBVIEW: BOLONES ===== -->
+<div class="subview" id="sub-bolones">
+<section class="section" id="masas-bolones">
+<h2 class="section-title fade-up"><span data-lang="es">NUESTRAS <span class="accent">MASAS</span></span><span data-lang="en">OUR <span class="accent">DOUGHS</span></span></h2>
+<div class="section-note fade-up"><span data-lang="es">El bolón se hace con plátano verde en tres puntos — elige el que más te guste.</span><span data-lang="en">Our bolón is made with green plantain at three stages — pick your favorite.</span></div>
+<div class="dish-card fade-up">
+<div class="dish-img"><img alt="Verde" id="bt.bolones.masas.verde.image" src="images/masas/verde.jpg"/></div>
+<div class="dish-body">
+<div class="dish-name"><span data-lang="es" id="bt.bolones.masas.verde.name.es">VERDE</span><span data-lang="en" id="bt.bolones.masas.verde.name.en">VERDE</span></div>
+<div class="dish-desc"><span data-lang="es" id="bt.bolones.masas.verde.desc.es">Masa de plátano verde en su punto natural, textura firme y sabor neutro — la base clásica del bolón.</span><span data-lang="en" id="bt.bolones.masas.verde.desc.en">Dough made with natural-stage green plantain, firm texture and neutral flavor — the classic bolón base.</span></div>
+<div class="dish-footer"><span class="dish-price"><small><span data-lang="es" id="bt.bolones.masas.verde.footer.es">Sabor tradicional</span><span data-lang="en" id="bt.bolones.masas.verde.footer.en">Traditional flavor</span></small></span></div>
+</div>
+</div>
+<div class="dish-card fade-up">
+<div class="dish-img"><img alt="Maduro" id="bt.bolones.masas.maduro.image" src="images/masas/maduro.jpg"/></div>
+<div class="dish-body">
+<div class="dish-name"><span data-lang="es" id="bt.bolones.masas.maduro.name.es">MADURO</span><span data-lang="en" id="bt.bolones.masas.maduro.name.en">MADURO</span></div>
+<div class="dish-desc"><span data-lang="es" id="bt.bolones.masas.maduro.desc.es">Masa de plátano en su punto maduro, más suave y jugosa, con un toque ligeramente dulce.</span><span data-lang="en" id="bt.bolones.masas.maduro.desc.en">Dough made with ripe-stage plantain, softer and juicier, with a slightly sweet touch.</span></div>
+<div class="dish-footer"><span class="dish-price"><small><span data-lang="es" id="bt.bolones.masas.maduro.footer.es">Textura suave</span><span data-lang="en" id="bt.bolones.masas.maduro.footer.en">Softer texture</span></small></span></div>
+</div>
+</div>
+<div class="dish-card fade-up">
+<div class="dish-img"><img alt="Pintón" id="bt.bolones.masas.pinton.image" src="images/masas/pinton.jpg"/></div>
+<div class="dish-body">
+<div class="dish-name"><span data-lang="es" id="bt.bolones.masas.pinton.name.es">PINTÓN</span><span data-lang="en" id="bt.bolones.masas.pinton.name.en">PINTÓN</span></div>
+<div class="dish-desc"><span data-lang="es" id="bt.bolones.masas.pinton.desc.es">Masa de plátano en su punto pintón, más firme y de sabor equilibrado, con trocitos dorados por dentro.</span><span data-lang="en" id="bt.bolones.masas.pinton.desc.en">Dough made with pintón-stage plantain, firmer texture and balanced flavor, with golden bits inside.</span></div>
+<div class="dish-footer"><span class="dish-price"><small><span data-lang="es" id="bt.bolones.masas.pinton.footer.es">Textura firme</span><span data-lang="en" id="bt.bolones.masas.pinton.footer.en">Firmer texture</span></small></span></div>
+</div>
+</div>
+</section>
+<div class="tax-note"><span data-lang="es">★ Todos nuestros precios incluyen impuestos</span><span data-lang="en">★ All prices include tax</span></div>
+<section class="section" id="precios-monobolon">
+<h2 class="section-title fade-up">MONOBOLÓN</h2>
+<div class="section-note fade-up"><span data-lang="es">Elige tamaño: entero o media porción.</span><span data-lang="en">Choose size: whole or half portion.</span></div>
+<div class="price-table fade-up">
+<div class="price-table-head"><span></span><span><span data-lang="es">ENTERO</span><span data-lang="en">WHOLE</span></span><span>1/2</span></div>
+<div class="price-table-row"><span class="pt-name"><span data-lang="es" id="bt.bolones.precios.queso.name.es">Queso</span><span data-lang="en" id="bt.bolones.precios.queso.name.en">Cheese</span></span><span class="pt-val" id="bt.bolones.precios.queso.entero">$5.00</span><span class="pt-val" id="bt.bolones.precios.queso.media">$3.25</span></div>
+<div class="price-table-row"><span class="pt-name"><span data-lang="es" id="bt.bolones.precios.mixto.name.es">Mixto</span><span data-lang="en" id="bt.bolones.precios.mixto.name.en">Mixed</span></span><span class="pt-val" id="bt.bolones.precios.mixto.entero">$7.35</span><span class="pt-val" id="bt.bolones.precios.mixto.media">$4.60</span></div>
+<div class="price-table-row"><span class="pt-name"><span data-lang="es" id="bt.bolones.precios.chicharron.name.es">Chicharrón</span><span data-lang="en" id="bt.bolones.precios.chicharron.name.en">Pork rind</span></span><span class="pt-val" id="bt.bolones.precios.chicharron.entero">$7.35</span><span class="pt-val" id="bt.bolones.precios.chicharron.media">$4.60</span></div>
+</div>
+<div class="section-note fade-up"><span data-lang="es">Mixto = queso con chicharrón.</span><span data-lang="en">Mixed = cheese with pork rind.</span></div>
+</section>
+<div class="tax-note"><span data-lang="es">★ Todos nuestros precios incluyen impuestos</span><span data-lang="en">★ All prices include tax</span></div>
+<section class="section" id="tunea-bolon">
+<div class="toppings-title fade-up"><span data-lang="es">TUNEA TU BOLÓN</span><span data-lang="en">CUSTOMIZE YOUR BOLÓN</span></div>
+<div class="toppings-sub fade-up"><span data-lang="es">Súmale un topping</span><span data-lang="en">Add a topping</span></div>
+<div class="drinks-cols fade-up">
+<div>
+<div class="drink-item"><span><span data-lang="es" id="bt.bolones.tunea.periqueado.name.es">Periqueado</span><span data-lang="en" id="bt.bolones.tunea.periqueado.name.en">Scrambled egg bits</span></span><b id="bt.bolones.tunea.periqueado.price">$0.35</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bt.bolones.tunea.salsa-de-queso.name.es">Salsa de queso</span><span data-lang="en" id="bt.bolones.tunea.salsa-de-queso.name.en">Cheese sauce</span></span><b id="bt.bolones.tunea.salsa-de-queso.price">$1.50</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bt.bolones.tunea.porcion-de-huevo.name.es">Porción de huevo</span><span data-lang="en" id="bt.bolones.tunea.porcion-de-huevo.name.en">Egg portion</span></span><b id="bt.bolones.tunea.porcion-de-huevo.price">$1.80</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bt.bolones.tunea.guatita.name.es">Guatita</span><span data-lang="en" id="bt.bolones.tunea.guatita.name.en">Tripe stew</span></span><b id="bt.bolones.tunea.guatita.price">$3.75</b></div>
+</div>
+<div>
+<div class="drink-item"><span><span data-lang="es" id="bt.bolones.tunea.carne-pollo-mechado.name.es">Carne / pollo mechado</span><span data-lang="en" id="bt.bolones.tunea.carne-pollo-mechado.name.en">Shredded beef / chicken</span></span><b id="bt.bolones.tunea.carne-pollo-mechado.price">$3.90</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bt.bolones.tunea.seco-de-carne-pollo-cerdo.name.es">Seco de carne / pollo / cerdo</span><span data-lang="en" id="bt.bolones.tunea.seco-de-carne-pollo-cerdo.name.en">Beef / chicken / pork stew</span></span><b id="bt.bolones.tunea.seco-de-carne-pollo-cerdo.price">$4.84</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bt.bolones.tunea.bistec-de-higado-carne-pollo.name.es">Bistec de hígado / carne / pollo</span><span data-lang="en" id="bt.bolones.tunea.bistec-de-higado-carne-pollo.name.en">Liver / beef / chicken steak</span></span><b id="bt.bolones.tunea.bistec-de-higado-carne-pollo.price">$4.24</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bt.bolones.tunea.salsa-de-camaron.name.es">Salsa de camarón</span><span data-lang="en" id="bt.bolones.tunea.salsa-de-camaron.name.en">Shrimp sauce</span></span><b id="bt.bolones.tunea.salsa-de-camaron.price">$4.75</b></div>
+</div>
+</div>
+</section>
+</div>
+<!-- ===== SUBVIEW: TIGRILLO ===== -->
+<div class="subview hidden" id="sub-tigrillo">
+<section class="section" id="masas-tigrillo">
+<h2 class="section-title fade-up"><span data-lang="es">NUESTRAS <span class="accent">MASAS</span></span><span data-lang="en">OUR <span class="accent">DOUGHS</span></span></h2>
+<div class="section-note fade-up"><span data-lang="es">El tigrillo se prepara con la masa que elijas.</span><span data-lang="en">Tigrillo is made with the dough you choose.</span></div>
+<div class="dish-card fade-up">
+<div class="dish-img"><img alt="Especial" id="bt.tigrillo.masas.especial.image" src="images/masas/especial.jpg"/></div>
+<div class="dish-body">
+<div class="dish-name" id="bt.tigrillo.masas.especial.name">ESPECIAL</div>
+<div class="dish-desc"><span data-lang="es" id="bt.tigrillo.masas.especial.desc.es">Cremosa masa de plátano verde, al estilo batea con queso, leche y huevo.</span><span data-lang="en" id="bt.tigrillo.masas.especial.desc.en">Creamy green plantain dough, batea-style, with cheese, milk and egg.</span></div>
+<div class="dish-footer"><span class="dish-price"><small><span data-lang="es" id="bt.tigrillo.masas.especial.footer.es">Mucho queso</span><span data-lang="en" id="bt.tigrillo.masas.especial.footer.en">Extra cheesy</span></small></span></div>
+</div>
+</div>
+<div class="dish-card fade-up">
+<div class="dish-img"><img alt="Tradicional" id="bt.tigrillo.masas.tradicional.image" src="images/masas/tradicional.jpg"/></div>
+<div class="dish-body">
+<div class="dish-name" id="bt.tigrillo.masas.tradicional.name">TRADICIONAL</div>
+<div class="dish-desc"><span data-lang="es" id="bt.tigrillo.masas.tradicional.desc.es">Masa de maduro y pintón majado con queso rallado, un toque de cebolla, cilantro y huevo revuelto.</span><span data-lang="en" id="bt.tigrillo.masas.tradicional.desc.en">Ripe and semi-ripe plantain mashed with grated cheese, a touch of onion, cilantro and scrambled egg.</span></div>
+<div class="dish-footer"><span class="dish-price"><small><span data-lang="es" id="bt.tigrillo.masas.tradicional.footer.es">Queso medio</span><span data-lang="en" id="bt.tigrillo.masas.tradicional.footer.en">Mild cheese</span></small></span></div>
+</div>
+</div>
+<div class="dish-card fade-up">
+<div class="dish-img"><img alt="De la Casa" id="bt.tigrillo.masas.de-la-casa.image" src="images/masas/de-la-casa.jpg"/></div>
+<div class="dish-body">
+<div class="dish-name"><span data-lang="es" id="bt.tigrillo.masas.de-la-casa.name.es">DE LA CASA</span><span data-lang="en" id="bt.tigrillo.masas.de-la-casa.name.en">HOUSE STYLE</span></div>
+<div class="dish-desc"><span data-lang="es" id="bt.tigrillo.masas.de-la-casa.desc.es">Masa de verde tipo puré con crema de leche, queso, cebolla, cilantro, aromatizado con hierbas.</span><span data-lang="en" id="bt.tigrillo.masas.de-la-casa.desc.en">Puree-style green plantain with cream, cheese, onion, cilantro, seasoned with herbs.</span></div>
+<div class="dish-footer"><span class="dish-price"><small><span data-lang="es" id="bt.tigrillo.masas.de-la-casa.footer.es">Cremosa y aromática</span><span data-lang="en" id="bt.tigrillo.masas.de-la-casa.footer.en">Creamy &amp; aromatic</span></small></span></div>
+</div>
+</div>
+<div class="dish-card fade-up">
+<div class="dish-tag"><span data-lang="es">SIN LÁCTEOS</span><span data-lang="en">DAIRY-FREE</span></div>
+<div class="dish-img"><img alt="Monochop" id="bt.tigrillo.masas.monochop.image" src="images/masas/monochop.jpg"/></div>
+<div class="dish-body">
+<div class="dish-name" id="bt.tigrillo.masas.monochop.name">MONOCHOP</div>
+<div class="dish-desc"><span data-lang="es" id="bt.tigrillo.masas.monochop.desc.es">Tigrillo de plátano verde sin lácteos, salteado con cilantro, cebolla, huevo y chicharrón.</span><span data-lang="en" id="bt.tigrillo.masas.monochop.desc.en">Dairy-free green plantain tigrillo, sautéed with cilantro, onion, egg and crispy pork rind.</span></div>
+<div class="dish-footer"><span class="dish-price"><small><span data-lang="es" id="bt.tigrillo.masas.monochop.footer.es">Sin queso</span><span data-lang="en" id="bt.tigrillo.masas.monochop.footer.en">No cheese</span></small></span></div>
+</div>
+</div>
+</section>
+<div class="tax-note"><span data-lang="es">★ Todos nuestros precios incluyen impuestos</span><span data-lang="en">★ All prices include tax</span></div>
+<section class="section" id="precios-tigrillo">
+<h2 class="section-title fade-up">TIGRILLO</h2>
+<div class="section-note fade-up"><span data-lang="es">Solo viene en tamaño entero.</span><span data-lang="en">Only available in whole size.</span></div>
+<div class="drinks-cols fade-up">
+<div>
+<div class="drink-item"><span><span data-lang="es" id="bt.tigrillo.precios.queso.name.es">Queso</span><span data-lang="en" id="bt.tigrillo.precios.queso.name.en">Cheese</span></span><b id="bt.tigrillo.precios.queso.price">$4.50</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bt.tigrillo.precios.mixto.name.es">Mixto</span><span data-lang="en" id="bt.tigrillo.precios.mixto.name.en">Mixed</span></span><b id="bt.tigrillo.precios.mixto.price">$5.85</b></div>
+<div class="drink-item"><span id="bt.tigrillo.precios.monochop.name">Monochop</span><b id="bt.tigrillo.precios.monochop.price">$5.85</b></div>
+</div>
+<div>
+<div class="drink-item"><span><span data-lang="es" id="bt.tigrillo.precios.tigrillo-4x4-sampler-de-masas.name.es">Tigrillo 4x4 (sampler de masas)</span><span data-lang="en" id="bt.tigrillo.precios.tigrillo-4x4-sampler-de-masas.name.en">Tigrillo 4x4 (dough sampler)</span></span><b id="bt.tigrillo.precios.tigrillo-4x4-sampler-de-masas.price">$9.45</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bt.tigrillo.precios.tigrillo-4x4-mixto.name.es">Tigrillo 4x4 Mixto</span><span data-lang="en" id="bt.tigrillo.precios.tigrillo-4x4-mixto.name.en">Tigrillo 4x4 Mixed</span></span><b id="bt.tigrillo.precios.tigrillo-4x4-mixto.price">$11.70</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bt.tigrillo.precios.super-proteina.name.es">Súper Proteína</span><span data-lang="en" id="bt.tigrillo.precios.super-proteina.name.en">Súper Proteína</span></span><b id="bt.tigrillo.precios.super-proteina.price">$9.45</b></div>
+</div>
+</div>
+</section>
+<div class="tax-note"><span data-lang="es">★ Todos nuestros precios incluyen impuestos</span><span data-lang="en">★ All prices include tax</span></div>
+<section class="section" id="tunea-tigrillo">
+<div class="toppings-title fade-up"><span data-lang="es">TUNEA TU TIGRILLO</span><span data-lang="en">CUSTOMIZE YOUR TIGRILLO</span></div>
+<div class="toppings-sub fade-up"><span data-lang="es">Súmale un topping</span><span data-lang="en">Add a topping</span></div>
+<div class="drinks-cols fade-up">
+<div>
+<div class="drink-item"><span><span data-lang="es" id="bt.tigrillo.tunea.periqueado.name.es">Periqueado</span><span data-lang="en" id="bt.tigrillo.tunea.periqueado.name.en">Scrambled egg bits</span></span><b id="bt.tigrillo.tunea.periqueado.price">$0.35</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bt.tigrillo.tunea.salsa-de-queso.name.es">Salsa de queso</span><span data-lang="en" id="bt.tigrillo.tunea.salsa-de-queso.name.en">Cheese sauce</span></span><b id="bt.tigrillo.tunea.salsa-de-queso.price">$1.50</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bt.tigrillo.tunea.porcion-de-huevo.name.es">Porción de huevo</span><span data-lang="en" id="bt.tigrillo.tunea.porcion-de-huevo.name.en">Egg portion</span></span><b id="bt.tigrillo.tunea.porcion-de-huevo.price">$1.80</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bt.tigrillo.tunea.guatita.name.es">Guatita</span><span data-lang="en" id="bt.tigrillo.tunea.guatita.name.en">Tripe stew</span></span><b id="bt.tigrillo.tunea.guatita.price">$3.75</b></div>
+</div>
+<div>
+<div class="drink-item"><span><span data-lang="es" id="bt.tigrillo.tunea.carne-pollo-mechado.name.es">Carne / pollo mechado</span><span data-lang="en" id="bt.tigrillo.tunea.carne-pollo-mechado.name.en">Shredded beef / chicken</span></span><b id="bt.tigrillo.tunea.carne-pollo-mechado.price">$3.90</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bt.tigrillo.tunea.seco-de-carne-pollo-cerdo.name.es">Seco de carne / pollo / cerdo</span><span data-lang="en" id="bt.tigrillo.tunea.seco-de-carne-pollo-cerdo.name.en">Beef / chicken / pork stew</span></span><b id="bt.tigrillo.tunea.seco-de-carne-pollo-cerdo.price">$4.84</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bt.tigrillo.tunea.bistec-de-higado-carne-pollo.name.es">Bistec de hígado / carne / pollo</span><span data-lang="en" id="bt.tigrillo.tunea.bistec-de-higado-carne-pollo.name.en">Liver / beef / chicken steak</span></span><b id="bt.tigrillo.tunea.bistec-de-higado-carne-pollo.price">$4.24</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bt.tigrillo.tunea.salsa-de-camaron.name.es">Salsa de camarón</span><span data-lang="en" id="bt.tigrillo.tunea.salsa-de-camaron.name.en">Shrimp sauce</span></span><b id="bt.tigrillo.tunea.salsa-de-camaron.price">$4.75</b></div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<div class="badges fade-up">
+<div class="badge"><div class="bicon">✦</div><div class="blabel"><span data-lang="es">Masa Fresca Cada Día</span><span data-lang="en">Fresh Dough Daily</span></div></div>
+<div class="badge"><div class="bicon">✦</div><div class="blabel"><span data-lang="es">Elige tu Tamaño</span><span data-lang="en">Choose Your Size</span></div></div>
+<div class="badge"><div class="bicon">✦</div><div class="blabel"><span data-lang="es">Personalízalo a tu Gusto</span><span data-lang="en">Customize It Your Way</span></div></div>
+</div>
+</section>
+<section class="hidden" id="menu-desayunos">
+<div class="cover">
+<div class="cover-inner">
+<div class="cover-eyebrow">Jama Guayaca &amp; Drinks</div>
+<div class="cover-title"><span data-lang="es">Desayunos</span><span data-lang="en">Breakfast</span></div>
+<div class="cover-accent"><span data-lang="es">El comienzo del día, sabor guayaco</span><span data-lang="en">Start your day, Guayaquil style</span></div>
+<img alt="MonoBolón" class="cover-logo-sm" src="images/logo/monobolon.png"/>
+</div>
+</div>
+<nav class="nav">
+<div class="nav-inner">
+<a class="nav-btn" href="#masas"><span data-lang="es">MASAS</span><span data-lang="en">DOUGHS</span></a>
+<a class="nav-btn" href="#clasicos"><span data-lang="es">CLÁSICOS</span><span data-lang="en">CLASSICS</span></a>
+<a class="nav-btn" href="#desayunos-esp"><span data-lang="es">ESPECIALES</span><span data-lang="en">SPECIALS</span></a>
+</div>
+</nav>
+<main>
+<section class="section" id="masas">
+<h2 class="section-title fade-up"><span data-lang="es">ELIGE TU <span class="accent">MASA</span></span><span data-lang="en">CHOOSE YOUR <span class="accent">DOUGH</span></span></h2>
+<div class="section-note fade-up"><span data-lang="es">Cada masa tiene su textura y sabor. Si te gusta el queso, elige "Especial". Si no consumes lácteos, "Monochop" es para ti.</span><span data-lang="en">Each dough has its own texture and flavor. If you love cheese, go for "Especial." Dairy-free? "Monochop" is for you.</span></div>
+<div class="dish-card fade-up">
+<div class="dish-img"><img alt="Especial" id="desayunos.masas.especial.image" src="images/masas/especial.jpg"/></div>
+<div class="dish-body">
+<div class="dish-name" id="desayunos.masas.especial.name">ESPECIAL</div>
+<div class="dish-desc"><span data-lang="es" id="desayunos.masas.especial.desc.es">Cremosa masa de plátano verde, al estilo batea con queso, leche y huevo.</span><span data-lang="en" id="desayunos.masas.especial.desc.en">Creamy green plantain dough, batea-style, with cheese, milk and egg.</span></div>
+<div class="dish-footer"><span class="dish-price"><small><span data-lang="es" id="desayunos.masas.especial.footer.es">Mucho queso</span><span data-lang="en" id="desayunos.masas.especial.footer.en">Extra cheesy</span></small></span></div>
+</div>
+</div>
+<div class="dish-card fade-up">
+<div class="dish-img"><img alt="Tradicional" id="desayunos.masas.tradicional.image" src="images/masas/tradicional.jpg"/></div>
+<div class="dish-body">
+<div class="dish-name" id="desayunos.masas.tradicional.name">TRADICIONAL</div>
+<div class="dish-desc"><span data-lang="es" id="desayunos.masas.tradicional.desc.es">Masa de maduro y pintón majado con queso rallado, un toque de cebolla, cilantro y huevo revuelto.</span><span data-lang="en" id="desayunos.masas.tradicional.desc.en">Ripe and semi-ripe plantain mashed with grated cheese, a touch of onion, cilantro and scrambled egg.</span></div>
+<div class="dish-footer"><span class="dish-price"><small><span data-lang="es" id="desayunos.masas.tradicional.footer.es">Queso medio</span><span data-lang="en" id="desayunos.masas.tradicional.footer.en">Mild cheese</span></small></span></div>
+</div>
+</div>
+<div class="dish-card fade-up">
+<div class="dish-img"><img alt="De la Casa" id="desayunos.masas.de-la-casa.image" src="images/masas/de-la-casa.jpg"/></div>
+<div class="dish-body">
+<div class="dish-name"><span data-lang="es" id="desayunos.masas.de-la-casa.name.es">DE LA CASA</span><span data-lang="en" id="desayunos.masas.de-la-casa.name.en">HOUSE STYLE</span></div>
+<div class="dish-desc"><span data-lang="es" id="desayunos.masas.de-la-casa.desc.es">Masa de verde tipo puré con crema de leche, queso, cebolla, cilantro, aromatizado con hierbas.</span><span data-lang="en" id="desayunos.masas.de-la-casa.desc.en">Puree-style green plantain with cream, cheese, onion, cilantro, seasoned with herbs.</span></div>
+<div class="dish-footer"><span class="dish-price"><small><span data-lang="es" id="desayunos.masas.de-la-casa.footer.es">Cremosa y aromática</span><span data-lang="en" id="desayunos.masas.de-la-casa.footer.en">Creamy &amp; aromatic</span></small></span></div>
+</div>
+</div>
+<div class="dish-card fade-up">
+<div class="dish-tag"><span data-lang="es">SIN LÁCTEOS</span><span data-lang="en">DAIRY-FREE</span></div>
+<div class="dish-img"><img alt="Monochop" id="desayunos.masas.monochop.image" src="images/masas/monochop.jpg"/></div>
+<div class="dish-body">
+<div class="dish-name" id="desayunos.masas.monochop.name">MONOCHOP</div>
+<div class="dish-desc"><span data-lang="es" id="desayunos.masas.monochop.desc.es">Tigrillo de plátano verde sin lácteos, salteado con cilantro, cebolla, huevo y chicharrón.</span><span data-lang="en" id="desayunos.masas.monochop.desc.en">Dairy-free green plantain tigrillo, sautéed with cilantro, onion, egg and crispy pork rind.</span></div>
+<div class="dish-footer"><span class="dish-price"><small><span data-lang="es" id="desayunos.masas.monochop.footer.es">Sin queso</span><span data-lang="en" id="desayunos.masas.monochop.footer.en">No cheese</span></small></span></div>
+</div>
+</div>
+</section>
+<div class="tax-note"><span data-lang="es">★ Todos nuestros precios incluyen impuestos</span><span data-lang="en">★ All prices include tax</span></div>
+<section class="section" id="desayunos-esp">
+<h2 class="section-title fade-up"><span data-lang="es">DESAYUNOS <span class="accent">ESPECIALES</span></span><span data-lang="en">BREAKFAST <span class="accent">SPECIALS</span></span></h2>
+<div class="masa-hero fade-up"><img alt="Desayuno MonoBolón con carne mechada" src="images/hero/desayuno-monobolon-con-carne-mechada.jpg"/></div>
+<div class="toppings-title fade-up"><span data-lang="es">DESAYUNO PICADITAS</span><span data-lang="en">BREAKFAST BITES</span></div>
+<div class="toppings-sub fade-up"><span data-lang="es">Incluye 2 huevos, café &amp; jugo</span><span data-lang="en">Includes 2 eggs, coffee &amp; juice</span></div>
+<div class="fade-up">
+<div class="drink-item"><span><span data-lang="es" id="desayunos.picaditas_combo.2-tortillas-verde-o-yuca.name.es">2 Tortillas (Verde o Yuca)</span><span data-lang="en" id="desayunos.picaditas_combo.2-tortillas-verde-o-yuca.name.en">2 Tortillas (Green plantain or Yuca)</span></span><b id="desayunos.picaditas_combo.2-tortillas-verde-o-yuca.price">$7.90</b></div>
+<div class="drink-item"><span><span data-lang="es" id="desayunos.picaditas_combo.duo-verde-y-yuca.name.es">Duo (Verde y Yuca)</span><span data-lang="en" id="desayunos.picaditas_combo.duo-verde-y-yuca.name.en">Duo (Green plantain &amp; Yuca)</span></span><b id="desayunos.picaditas_combo.duo-verde-y-yuca.price">$7.90</b></div>
+<div class="drink-item"><span><span data-lang="es" id="desayunos.picaditas_combo.2-croquetas-yuca-mixta.name.es">2 Croquetas (Yuca Mixta)</span><span data-lang="en" id="desayunos.picaditas_combo.2-croquetas-yuca-mixta.name.en">2 Croquettes (Mixed Yuca)</span></span><b id="desayunos.picaditas_combo.2-croquetas-yuca-mixta.price">$8.90</b></div>
+</div>
+<div class="divider"></div>
+<div class="ff-card fade-up">
+<div class="ff-img"><img alt="Desayuno Monobolón" src="images/platos/desayuno-monobolon.jpg"/></div>
+<div class="ff-body"><div><div class="ff-name"><span data-lang="es" id="desayunos.tipo.desayuno-monobolon.name.es">DESAYUNO MONOBOLÓN</span><span data-lang="en" id="desayunos.tipo.desayuno-monobolon.name.en">MONOBOLÓN BREAKFAST</span></div><div class="ff-desc"><span data-lang="es">Completo: carne/pollo mechado · Incluye 2 huevos, café y jugo · precio Entero / 1/2</span><span data-lang="en">Full: with shredded beef/chicken · Includes 2 eggs, coffee and juice · Whole / Half price</span></div></div></div>
+</div>
+<div class="drinks-cols fade-up">
+<div>
+<div class="drink-item"><span><span data-lang="es" id="desayunos.tipo.desayuno-monobolon.precios.queso.name.es">Queso</span><span data-lang="en" id="desayunos.tipo.desayuno-monobolon.precios.queso.name.en">Cheese</span></span><b id="desayunos.tipo.desayuno-monobolon.precios.queso.price">$10.15</b></div>
+<div class="drink-item"><span><span data-lang="es" id="desayunos.tipo.desayuno-monobolon.precios.mixto.name.es">Mixto</span><span data-lang="en" id="desayunos.tipo.desayuno-monobolon.precios.mixto.name.en">Mixed</span></span><b id="desayunos.tipo.desayuno-monobolon.precios.mixto.price">$12.50</b></div>
+<div class="drink-item"><span><span data-lang="es" id="desayunos.tipo.desayuno-monobolon.precios.chicharron.name.es">Chicharrón</span><span data-lang="en" id="desayunos.tipo.desayuno-monobolon.precios.chicharron.name.en">Pork rind</span></span><b id="desayunos.tipo.desayuno-monobolon.precios.chicharron.price">$12.50</b></div>
+</div>
+<div>
+<div class="drink-item"><span><span data-lang="es" id="desayunos.tipo.desayuno-monobolon.precios.queso-completo.name.es">Queso (Completo)</span><span data-lang="en" id="desayunos.tipo.desayuno-monobolon.precios.queso-completo.name.en">Cheese (Full)</span></span><b id="desayunos.tipo.desayuno-monobolon.precios.queso-completo.price">$14.30</b></div>
+<div class="drink-item"><span><span data-lang="es" id="desayunos.tipo.desayuno-monobolon.precios.mixto-completo.name.es">Mixto (Completo)</span><span data-lang="en" id="desayunos.tipo.desayuno-monobolon.precios.mixto-completo.name.en">Mixed (Full)</span></span><b id="desayunos.tipo.desayuno-monobolon.precios.mixto-completo.price">$16.65</b></div>
+<div class="drink-item"><span><span data-lang="es" id="desayunos.tipo.desayuno-monobolon.precios.chicharron-completo.name.es">Chicharrón (Completo)</span><span data-lang="en" id="desayunos.tipo.desayuno-monobolon.precios.chicharron-completo.name.en">Pork rind (Full)</span></span><b id="desayunos.tipo.desayuno-monobolon.precios.chicharron-completo.price">$16.65</b></div>
+</div>
+</div>
+<div class="section-note fade-up"><span data-lang="es">Precio 1/2: Queso $8.40 · Mixto $9.75 · Chicharrón $9.75 · Queso (Completo) $13.90 · Mixto (Completo) $14.90 · Chicharrón (Completo) $13.90</span><span data-lang="en">Half price: Cheese $8.40 · Mixed $9.75 · Pork rind $9.75 · Cheese (Full) $13.90 · Mixed (Full) $14.90 · Pork rind (Full) $13.90</span></div>
+<div class="divider"></div>
+<div class="ff-card fade-up">
+<div class="ff-img"><img alt="Desayuno Trigrillo" src="images/platos/desayuno-trigrillo.jpg"/></div>
+<div class="ff-body"><div><div class="ff-name"><span data-lang="es" id="desayunos.tipo.desayuno-trigrillo.name.es">DESAYUNO TRIGRILLO</span><span data-lang="en" id="desayunos.tipo.desayuno-trigrillo.name.en">TRIGRILLO BREAKFAST</span></div><div class="ff-desc"><span data-lang="es">Incluye 2 huevos, café &amp; jugo</span><span data-lang="en">Includes 2 eggs, coffee &amp; juice</span></div></div></div>
+</div>
+<div class="drinks-cols fade-up">
+<div>
+<div class="drink-item"><span><span data-lang="es" id="desayunos.tipo.desayuno-trigrillo.precios.queso.name.es">Queso</span><span data-lang="en" id="desayunos.tipo.desayuno-trigrillo.precios.queso.name.en">Cheese</span></span><b id="desayunos.tipo.desayuno-trigrillo.precios.queso.price">$9.40</b></div>
+<div class="drink-item"><span><span data-lang="es" id="desayunos.tipo.desayuno-trigrillo.precios.mixto.name.es">Mixto</span><span data-lang="en" id="desayunos.tipo.desayuno-trigrillo.precios.mixto.name.en">Mixed</span></span><b id="desayunos.tipo.desayuno-trigrillo.precios.mixto.price">$10.75</b></div>
+<div class="drink-item"><span id="desayunos.tipo.desayuno-trigrillo.precios.monochop.name">Monochop</span><b id="desayunos.tipo.desayuno-trigrillo.precios.monochop.price">$10.75</b></div>
+<div class="drink-item"><span><span data-lang="es" id="desayunos.tipo.desayuno-trigrillo.precios.queso-completo-carne-pollo-mechado.name.es">Queso Completo (carne/pollo mechado)</span><span data-lang="en" id="desayunos.tipo.desayuno-trigrillo.precios.queso-completo-carne-pollo-mechado.name.en">Cheese Full (with shredded beef/chicken)</span></span><b id="desayunos.tipo.desayuno-trigrillo.precios.queso-completo-carne-pollo-mechado.price">$13.55</b></div>
+</div>
+<div>
+<div class="drink-item"><span><span data-lang="es" id="desayunos.tipo.desayuno-trigrillo.precios.mixto-completo-carne-pollo-mechado.name.es">Mixto Completo (carne/pollo mechado)</span><span data-lang="en" id="desayunos.tipo.desayuno-trigrillo.precios.mixto-completo-carne-pollo-mechado.name.en">Mixed Full (with shredded beef/chicken)</span></span><b id="desayunos.tipo.desayuno-trigrillo.precios.mixto-completo-carne-pollo-mechado.price">$14.90</b></div>
+<div class="drink-item"><span><span data-lang="es" id="desayunos.tipo.desayuno-trigrillo.precios.monochop-completo-carne-pollo-mechado.name.es">Monochop Completo (carne/pollo mechado)</span><span data-lang="en" id="desayunos.tipo.desayuno-trigrillo.precios.monochop-completo-carne-pollo-mechado.name.en">Monochop Full (with shredded beef/chicken)</span></span><b id="desayunos.tipo.desayuno-trigrillo.precios.monochop-completo-carne-pollo-mechado.price">$14.90</b></div>
+<div class="drink-item"><span><span data-lang="es" id="desayunos.tipo.desayuno-trigrillo.precios.camaron.name.es">Camarón</span><span data-lang="en" id="desayunos.tipo.desayuno-trigrillo.precios.camaron.name.en">Shrimp</span></span><b id="desayunos.tipo.desayuno-trigrillo.precios.camaron.price">$15.65</b></div>
+</div>
+</div>
+</section>
+</main>
+<div class="badges fade-up">
+<div class="badge"><div class="bicon">✦</div><div class="blabel"><span data-lang="es">Masa Fresca Cada Día</span><span data-lang="en">Fresh Dough Daily</span></div></div>
+<div class="badge"><div class="bicon">✦</div><div class="blabel"><span data-lang="es">Recetas de Casa</span><span data-lang="en">Homemade Recipes</span></div></div>
+<div class="badge"><div class="bicon">✦</div><div class="blabel"><span data-lang="es">Ideal para Empezar el Día</span><span data-lang="en">Perfect Way to Start the Day</span></div></div>
+</div>
+</section>
+<section class="hidden" id="menu-fuertes">
+<div class="cover">
+<div class="cover-inner">
+<div class="cover-eyebrow">Jama Guayaca &amp; Drinks</div>
+<div class="cover-title"><span data-lang="es">Platos Fuertes</span><span data-lang="en">Main Dishes</span></div>
+<div class="cover-accent"><span data-lang="es">El corazón de la cocina guayaca</span><span data-lang="en">The heart of Guayaquil cooking</span></div>
+<img alt="MonoBolón" class="cover-logo-sm" src="images/logo/monobolon.png"/>
+</div>
+</div>
+<div class="subchoice">
+<button class="subchoice-btn active" data-sub="especialidades" onclick="showSubFuertes(this,'especialidades')">
+<span class="sc-name"><span data-lang="es">ESPECIALIDADES</span><span data-lang="en">SPECIALS</span></span>
+<span class="sc-sub"><span data-lang="es">De la Casa</span><span data-lang="en">Of the House</span></span>
+</button>
+<button class="subchoice-btn" data-sub="lunch" onclick="showSubFuertes(this,'lunch')">
+<span class="sc-name">MENÚ LUNCH</span>
+<span class="sc-sub">$4.99</span>
+</button>
+</div>
+<main>
+<div class="subview" id="sub-fuertes-especialidades">
+<section class="special-section" id="especiales">
+<div class="special-head">
+<h2 class="sb-h1 fade-up"><span data-lang="es">ESPECIALES DE LA CASA</span><span data-lang="en">HOUSE SPECIALS</span></h2>
+<div class="sb-legend fade-up"><span data-lang="es">Moro, Bandera, Bollo, Encebollado, Cazuela y Platos Fuertes — el corazón de la cocina guayaca.</span><span data-lang="en">Moro, Bandera, Bollo, Encebollado, Cazuela and hearty mains — the heart of Guayaquil cooking.</span></div>
+</div>
+<div class="sb-slide fade-up">
+<div class="sb-photo"><img alt="Moro" id="fuertes.especiales.moro.image" src="images/especiales/moro.jpg"/></div>
+<div class="sb-content">
+<div class="sb-badge-row">
+<div class="sb-badge" id="fuertes.especiales.moro.badge">MORO</div>
+<div class="upsell-badge"><span class="upsell-icon">✦</span><span data-lang="es" id="fuertes.especiales.moro.upsell.es">Agrega Salsa 4 Quesos por $3.45</span><span data-lang="en" id="fuertes.especiales.moro.upsell.en">Add 4-Cheese Sauce for $3.45</span></div>
+</div>
+<div class="sb-rule"></div>
+<div class="sb-lines">
+<div class="sb-line"><span><span data-lang="es" id="fuertes.especiales.moro.lines.0.name.es">Con bistec (pollo/carne/hígado)</span><span data-lang="en" id="fuertes.especiales.moro.lines.0.name.en">With steak (chicken/beef/liver)</span></span><b id="fuertes.especiales.moro.lines.0.price">$10.50</b></div>
+<div class="sb-line"><span><span data-lang="es" id="fuertes.especiales.moro.lines.1.name.es">Con seco de carne</span><span data-lang="en" id="fuertes.especiales.moro.lines.1.name.en">With beef stew</span></span><b id="fuertes.especiales.moro.lines.1.price">$11.50</b></div>
+<div class="sb-line"><span><span data-lang="es" id="fuertes.especiales.moro.lines.2.name.es">Con seco de pollo</span><span data-lang="en" id="fuertes.especiales.moro.lines.2.name.en">With chicken stew</span></span><b id="fuertes.especiales.moro.lines.2.price">$11.50</b></div>
+<div class="sb-line"><span><span data-lang="es" id="fuertes.especiales.moro.lines.3.name.es">Con salsa de queso + bistec</span><span data-lang="en" id="fuertes.especiales.moro.lines.3.name.en">With cheese sauce + steak</span></span><b id="fuertes.especiales.moro.lines.3.price">$13.95</b></div>
+<div class="sb-line"><span><span data-lang="es" id="fuertes.especiales.moro.lines.4.name.es">Con salsa de queso + seco de carne</span><span data-lang="en" id="fuertes.especiales.moro.lines.4.name.en">With cheese sauce + beef stew</span></span><b id="fuertes.especiales.moro.lines.4.price">$14.95</b></div>
+<div class="sb-line"><span><span data-lang="es" id="fuertes.especiales.moro.lines.5.name.es">Con salsa de queso + seco de pollo</span><span data-lang="en" id="fuertes.especiales.moro.lines.5.name.en">With cheese sauce + chicken stew</span></span><b id="fuertes.especiales.moro.lines.5.price">$14.95</b></div>
+</div>
+</div>
+</div>
+<div class="sb-slide fade-up">
+<div class="sb-photo"><img alt="Bandera" id="fuertes.especiales.bandera.image" src="images/especiales/moro.jpg"/></div>
+<div class="sb-content">
+<div class="sb-badge" id="fuertes.especiales.bandera.badge">BANDERA</div>
+<div class="sb-rule"></div>
+<div class="sb-lines">
+<div class="sb-line"><span><span data-lang="es" id="fuertes.especiales.bandera.lines.0.name.es">Con seco de carne, guatita o menestra</span><span data-lang="en" id="fuertes.especiales.bandera.lines.0.name.en">With beef stew, tripe stew or lentil stew</span></span><b id="fuertes.especiales.bandera.lines.0.price">$12.75</b></div>
+<div class="sb-line"><span><span data-lang="es" id="fuertes.especiales.bandera.lines.1.name.es">Con seco de pollo, guatita o menestra</span><span data-lang="en" id="fuertes.especiales.bandera.lines.1.name.en">With chicken stew, tripe stew or lentil stew</span></span><b id="fuertes.especiales.bandera.lines.1.price">$12.75</b></div>
+<div class="sb-line"><span><span data-lang="es" id="fuertes.especiales.bandera.lines.2.name.es">Con seco de chancho, guatita o menestra</span><span data-lang="en" id="fuertes.especiales.bandera.lines.2.name.en">With pork stew, tripe stew or lentil stew</span></span><b id="fuertes.especiales.bandera.lines.2.price">$12.75</b></div>
+</div>
+</div>
+</div>
+<div class="sb-slide fade-up">
+<div class="sb-content">
+<div class="sb-badge" id="fuertes.especiales.bollo.badge">BOLLO</div>
+<div class="sb-rule"></div>
+<div class="sb-lines">
+<div class="sb-line"><span><span data-lang="es" id="fuertes.especiales.bollo.lines.0.name.es">Pescado</span><span data-lang="en" id="fuertes.especiales.bollo.lines.0.name.en">Fish</span></span><b id="fuertes.especiales.bollo.lines.0.price">$5.50</b></div>
+<div class="sb-line"><span><span data-lang="es" id="fuertes.especiales.bollo.lines.1.name.es">Mixto</span><span data-lang="en" id="fuertes.especiales.bollo.lines.1.name.en">Mixed</span></span><b id="fuertes.especiales.bollo.lines.1.price">$7.25</b></div>
+</div>
+</div>
+</div>
+<div class="sb-slide fade-up">
+<div class="sb-content">
+<div class="sb-badge" id="fuertes.especiales.encebollado.badge">ENCEBOLLADO</div>
+<div class="sb-rule"></div>
+<div class="sb-lines">
+<div class="sb-line"><span><span data-lang="es" id="fuertes.especiales.encebollado.lines.0.name.es">Normal</span><span data-lang="en" id="fuertes.especiales.encebollado.lines.0.name.en">Regular</span></span><b id="fuertes.especiales.encebollado.lines.0.price">$4.99</b></div>
+<div class="sb-line"><span><span data-lang="es" id="fuertes.especiales.encebollado.lines.1.name.es">Mixto</span><span data-lang="en" id="fuertes.especiales.encebollado.lines.1.name.en">Mixed</span></span><b id="fuertes.especiales.encebollado.lines.1.price">$7.99</b></div>
+</div>
+</div>
+</div>
+<div class="sb-slide fade-up">
+<div class="sb-content">
+<div class="sb-badge" id="fuertes.especiales.cazuela.badge">CAZUELA</div>
+<div class="sb-rule"></div>
+<div class="sb-lines">
+<div class="sb-line"><span><span data-lang="es" id="fuertes.especiales.cazuela.lines.0.name.es">Albacora</span><span data-lang="en" id="fuertes.especiales.cazuela.lines.0.name.en">Albacore tuna</span></span><b id="fuertes.especiales.cazuela.lines.0.price">$7.99</b></div>
+<div class="sb-line"><span><span data-lang="es" id="fuertes.especiales.cazuela.lines.1.name.es">Camarón</span><span data-lang="en" id="fuertes.especiales.cazuela.lines.1.name.en">Shrimp</span></span><b id="fuertes.especiales.cazuela.lines.1.price">$7.99</b></div>
+<div class="sb-line"><span><span data-lang="es" id="fuertes.especiales.cazuela.lines.2.name.es">Mixta</span><span data-lang="en" id="fuertes.especiales.cazuela.lines.2.name.en">Mixed</span></span><b id="fuertes.especiales.cazuela.lines.2.price">$8.99</b></div>
+</div>
+</div>
+</div>
+<div class="sb-slide fade-up">
+<div class="sb-photo"><img alt="Platos Fuertes" id="fuertes.especiales.platos-fuertes.image" src="images/especiales/platos-fuertes.jpg"/></div>
+<div class="sb-content">
+<div class="sb-badge"><span data-lang="es" id="fuertes.especiales.platos-fuertes.badge.es">PLATOS FUERTES</span><span data-lang="en" id="fuertes.especiales.platos-fuertes.badge.en">MAIN DISHES</span></div>
+<div class="sb-rule"></div>
+<div class="sb-lines">
+<div class="sb-line"><span><span data-lang="es" id="fuertes.especiales.platos-fuertes.lines.0.name.es">Guatita</span><span data-lang="en" id="fuertes.especiales.platos-fuertes.lines.0.name.en">Tripe stew</span></span><b id="fuertes.especiales.platos-fuertes.lines.0.price">$8.50</b></div>
+<div class="sb-line"><span><span data-lang="es" id="fuertes.especiales.platos-fuertes.lines.1.name.es">Bistec</span><span data-lang="en" id="fuertes.especiales.platos-fuertes.lines.1.name.en">Steak</span></span><b id="fuertes.especiales.platos-fuertes.lines.1.price">$8.75</b></div>
+<div class="sb-line"><span><span data-lang="es" id="fuertes.especiales.platos-fuertes.lines.2.name.es">Seco</span><span data-lang="en" id="fuertes.especiales.platos-fuertes.lines.2.name.en">Stew</span></span><b id="fuertes.especiales.platos-fuertes.lines.2.price">$8.75</b></div>
+<div class="sb-line"><span><span data-lang="es" id="fuertes.especiales.platos-fuertes.lines.3.name.es">Menestra</span><span data-lang="en" id="fuertes.especiales.platos-fuertes.lines.3.name.en">Lentil stew</span></span><b id="fuertes.especiales.platos-fuertes.lines.3.price">$9.50</b></div>
+</div>
+</div>
+</div>
+</section>
+<div class="tax-note"><span data-lang="es">★ Todos nuestros precios incluyen impuestos</span><span data-lang="en">★ All prices include tax</span></div>
+<section class="section" id="extras-especialidades">
+<div class="extras-banner fade-up"><span data-lang="es">EXTRAS</span><span data-lang="en">SIDES</span></div>
+<div class="section-note fade-up"><span data-lang="es">Personaliza tu plato.</span><span data-lang="en">Customize your dish.</span></div>
+<div class="drinks-cols fade-up">
+<div class="extras-list">
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_esp.maduro.name.es">Maduro</span><span data-lang="en" id="fuertes.extras_esp.maduro.name.en">Ripe plantain</span></span><span class="extra-price" id="fuertes.extras_esp.maduro.price">$2.00</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_esp.maduro-con-queso.name.es">Maduro con queso</span><span data-lang="en" id="fuertes.extras_esp.maduro-con-queso.name.en">Ripe plantain with cheese</span></span><span class="extra-price" id="fuertes.extras_esp.maduro-con-queso.price">$3.00</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_esp.patacon.name.es">Patacón</span><span data-lang="en" id="fuertes.extras_esp.patacon.name.en">Patacón</span></span><span class="extra-price" id="fuertes.extras_esp.patacon.price">$2.00</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_esp.patacon-con-queso.name.es">Patacón con queso</span><span data-lang="en" id="fuertes.extras_esp.patacon-con-queso.name.en">Patacón with cheese</span></span><span class="extra-price" id="fuertes.extras_esp.patacon-con-queso.price">$3.00</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_esp.huevos-revueltos-fritos-bien-fritos.name.es">Huevos revueltos / fritos / bien fritos</span><span data-lang="en" id="fuertes.extras_esp.huevos-revueltos-fritos-bien-fritos.name.en">Scrambled / fried / well-fried eggs</span></span><span class="extra-price" id="fuertes.extras_esp.huevos-revueltos-fritos-bien-fritos.price">$1.80</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_esp.aguacate.name.es">Aguacate</span><span data-lang="en" id="fuertes.extras_esp.aguacate.name.en">Avocado</span></span><span class="extra-price" id="fuertes.extras_esp.aguacate.price">$1.50</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_esp.chicharron.name.es">Chicharrón</span><span data-lang="en" id="fuertes.extras_esp.chicharron.name.en">Crispy pork rind</span></span><span class="extra-price" id="fuertes.extras_esp.chicharron.price">$2.25</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_esp.guatita.name.es">Guatita</span><span data-lang="en" id="fuertes.extras_esp.guatita.name.en">Tripe stew</span></span><span class="extra-price" id="fuertes.extras_esp.guatita.price">$3.75</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_esp.menestra.name.es">Menestra</span><span data-lang="en" id="fuertes.extras_esp.menestra.name.en">Lentil stew</span></span><span class="extra-price" id="fuertes.extras_esp.menestra.price">$3.50</span></div>
+</div>
+<div class="extras-list">
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_esp.salsa-de-queso.name.es">Salsa de queso</span><span data-lang="en" id="fuertes.extras_esp.salsa-de-queso.name.en">Cheese sauce</span></span><span class="extra-price" id="fuertes.extras_esp.salsa-de-queso.price">$1.50</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_esp.pollo-mechado.name.es">Pollo mechado</span><span data-lang="en" id="fuertes.extras_esp.pollo-mechado.name.en">Shredded chicken</span></span><span class="extra-price" id="fuertes.extras_esp.pollo-mechado.price">$3.90</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_esp.carne-mechada.name.es">Carne mechada</span><span data-lang="en" id="fuertes.extras_esp.carne-mechada.name.en">Shredded beef</span></span><span class="extra-price" id="fuertes.extras_esp.carne-mechada.price">$3.90</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_esp.filete-de-carne-pollo.name.es">Filete de carne / pollo</span><span data-lang="en" id="fuertes.extras_esp.filete-de-carne-pollo.name.en">Beef / chicken fillet</span></span><span class="extra-price" id="fuertes.extras_esp.filete-de-carne-pollo.price">$4.24</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_esp.salsa-de-camaron.name.es">Salsa de camarón</span><span data-lang="en" id="fuertes.extras_esp.salsa-de-camaron.name.en">Shrimp sauce</span></span><span class="extra-price" id="fuertes.extras_esp.salsa-de-camaron.price">$4.75</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_esp.chifles.name.es">Chifles</span><span data-lang="en" id="fuertes.extras_esp.chifles.name.en">Plantain chips</span></span><span class="extra-price" id="fuertes.extras_esp.chifles.price">$0.75</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_esp.queso.name.es">Queso</span><span data-lang="en" id="fuertes.extras_esp.queso.name.en">Cheese</span></span><span class="extra-price" id="fuertes.extras_esp.queso.price">$1.00</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_esp.arroz.name.es">Arroz</span><span data-lang="en" id="fuertes.extras_esp.arroz.name.en">Rice</span></span><span class="extra-price" id="fuertes.extras_esp.arroz.price">$1.75</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_esp.moros.name.es">Moros</span><span data-lang="en" id="fuertes.extras_esp.moros.name.en">Moro rice</span></span><span class="extra-price" id="fuertes.extras_esp.moros.price">$3.75</span></div>
+</div>
+</div>
+</section>
+</div>
+<div class="subview hidden" id="sub-fuertes-lunch">
+<section class="section" id="lunch">
+<h2 class="section-title fade-up"><span data-lang="es">MENÚ <span class="accent">LUNCH</span></span><span data-lang="en"><span class="accent">LUNCH</span> MENU</span></h2>
+<div class="section-note fade-up"><span data-lang="es">$4.99 · Incluye limonada</span><span data-lang="en">$4.99 · Includes lemonade</span></div>
+<div class="masa-hero fade-up"><img alt="Menú Lunch" id="fuertes.lunch.hero_image" src="images/hero/menu-lunch.jpg"/></div>
+<div class="desc-list fade-up">
+<div class="item">
+<div class="name"><span data-lang="es" id="fuertes.lunch.menestra-de-frejol-o-lenteja.name.es">Menestra de fréjol o lenteja</span><span data-lang="en" id="fuertes.lunch.menestra-de-frejol-o-lenteja.name.en">Bean or lentil stew</span></div>
+<div class="sub"><span data-lang="es" id="fuertes.lunch.menestra-de-frejol-o-lenteja.sub.es">Con filete de pollo, carne o pescado apanado, arroz y maduro o patacón.</span><span data-lang="en" id="fuertes.lunch.menestra-de-frejol-o-lenteja.sub.en">With breaded chicken, beef or fish fillet, rice and ripe plantain or patacón.</span></div>
+</div>
+<div class="item">
+<div class="name"><span data-lang="es" id="fuertes.lunch.bistec-de-carne-pollo-o-higado.name.es">Bistec de carne, pollo o hígado</span><span data-lang="en" id="fuertes.lunch.bistec-de-carne-pollo-o-higado.name.en">Beef, chicken or liver steak</span></div>
+<div class="sub"><span data-lang="es" id="fuertes.lunch.bistec-de-carne-pollo-o-higado.sub.es">Con arroz y aguacate, maduro o patacón.</span><span data-lang="en" id="fuertes.lunch.bistec-de-carne-pollo-o-higado.sub.en">With rice and avocado, ripe plantain or patacón.</span></div>
+</div>
+<div class="item">
+<div class="name"><span data-lang="es" id="fuertes.lunch.seco-de-pollo-pieza-del-dia.name.es">Seco de pollo (pieza del día)</span><span data-lang="en" id="fuertes.lunch.seco-de-pollo-pieza-del-dia.name.en">Chicken stew (dish of the day)</span></div>
+<div class="sub"><span data-lang="es" id="fuertes.lunch.seco-de-pollo-pieza-del-dia.sub.es">Con arroz y aguacate, maduro o patacón.</span><span data-lang="en" id="fuertes.lunch.seco-de-pollo-pieza-del-dia.sub.en">With rice and avocado, ripe plantain or patacón.</span></div>
+</div>
+<div class="item">
+<div class="name"><span data-lang="es" id="fuertes.lunch.cazuela-de-atun-procesado.name.es">Cazuela de atún procesado</span><span data-lang="en" id="fuertes.lunch.cazuela-de-atun-procesado.name.en">Processed tuna cazuela</span></div>
+<div class="sub"><span data-lang="es" id="fuertes.lunch.cazuela-de-atun-procesado.sub.es">Con arroz y maduro o patacón.</span><span data-lang="en" id="fuertes.lunch.cazuela-de-atun-procesado.sub.en">With rice and ripe plantain or patacón.</span></div>
+</div>
+<div class="item">
+<div class="name"><span data-lang="es" id="fuertes.lunch.guatita-lunch.name.es">Guatita lunch</span><span data-lang="en" id="fuertes.lunch.guatita-lunch.name.en">Tripe stew lunch</span></div>
+<div class="sub"><span data-lang="es" id="fuertes.lunch.guatita-lunch.sub.es">Con arroz y aguacate, maduro o patacón.</span><span data-lang="en" id="fuertes.lunch.guatita-lunch.sub.en">With rice and avocado, ripe plantain or patacón.</span></div>
+</div>
+</div>
+<div class="section-note fade-up"><span data-lang="es">Convierte tu arroz en arroz moro por $1.99 adicional.</span><span data-lang="en">Upgrade your rice to moro rice for an extra $1.99.</span></div>
+</section>
+<div class="tax-note"><span data-lang="es">★ Todos nuestros precios incluyen impuestos</span><span data-lang="en">★ All prices include tax</span></div>
+<section class="section" id="extras-lunch">
+<div class="extras-banner fade-up"><span data-lang="es">EXTRAS</span><span data-lang="en">SIDES</span></div>
+<div class="section-note fade-up"><span data-lang="es">Personaliza tu plato.</span><span data-lang="en">Customize your dish.</span></div>
+<div class="drinks-cols fade-up">
+<div class="extras-list">
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_lunch.maduro.name.es">Maduro</span><span data-lang="en" id="fuertes.extras_lunch.maduro.name.en">Ripe plantain</span></span><span class="extra-price" id="fuertes.extras_lunch.maduro.price">$2.00</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_lunch.maduro-con-queso.name.es">Maduro con queso</span><span data-lang="en" id="fuertes.extras_lunch.maduro-con-queso.name.en">Ripe plantain with cheese</span></span><span class="extra-price" id="fuertes.extras_lunch.maduro-con-queso.price">$3.00</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_lunch.patacon.name.es">Patacón</span><span data-lang="en" id="fuertes.extras_lunch.patacon.name.en">Patacón</span></span><span class="extra-price" id="fuertes.extras_lunch.patacon.price">$2.00</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_lunch.patacon-con-queso.name.es">Patacón con queso</span><span data-lang="en" id="fuertes.extras_lunch.patacon-con-queso.name.en">Patacón with cheese</span></span><span class="extra-price" id="fuertes.extras_lunch.patacon-con-queso.price">$3.00</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_lunch.huevos-revueltos-fritos-bien-fritos.name.es">Huevos revueltos / fritos / bien fritos</span><span data-lang="en" id="fuertes.extras_lunch.huevos-revueltos-fritos-bien-fritos.name.en">Scrambled / fried / well-fried eggs</span></span><span class="extra-price" id="fuertes.extras_lunch.huevos-revueltos-fritos-bien-fritos.price">$1.80</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_lunch.aguacate.name.es">Aguacate</span><span data-lang="en" id="fuertes.extras_lunch.aguacate.name.en">Avocado</span></span><span class="extra-price" id="fuertes.extras_lunch.aguacate.price">$1.50</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_lunch.chicharron.name.es">Chicharrón</span><span data-lang="en" id="fuertes.extras_lunch.chicharron.name.en">Crispy pork rind</span></span><span class="extra-price" id="fuertes.extras_lunch.chicharron.price">$2.25</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_lunch.guatita.name.es">Guatita</span><span data-lang="en" id="fuertes.extras_lunch.guatita.name.en">Tripe stew</span></span><span class="extra-price" id="fuertes.extras_lunch.guatita.price">$3.75</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_lunch.menestra.name.es">Menestra</span><span data-lang="en" id="fuertes.extras_lunch.menestra.name.en">Lentil stew</span></span><span class="extra-price" id="fuertes.extras_lunch.menestra.price">$3.50</span></div>
+</div>
+<div class="extras-list">
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_lunch.salsa-de-queso.name.es">Salsa de queso</span><span data-lang="en" id="fuertes.extras_lunch.salsa-de-queso.name.en">Cheese sauce</span></span><span class="extra-price" id="fuertes.extras_lunch.salsa-de-queso.price">$1.50</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_lunch.pollo-mechado.name.es">Pollo mechado</span><span data-lang="en" id="fuertes.extras_lunch.pollo-mechado.name.en">Shredded chicken</span></span><span class="extra-price" id="fuertes.extras_lunch.pollo-mechado.price">$3.90</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_lunch.carne-mechada.name.es">Carne mechada</span><span data-lang="en" id="fuertes.extras_lunch.carne-mechada.name.en">Shredded beef</span></span><span class="extra-price" id="fuertes.extras_lunch.carne-mechada.price">$3.90</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_lunch.filete-de-carne-pollo.name.es">Filete de carne / pollo</span><span data-lang="en" id="fuertes.extras_lunch.filete-de-carne-pollo.name.en">Beef / chicken fillet</span></span><span class="extra-price" id="fuertes.extras_lunch.filete-de-carne-pollo.price">$4.24</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_lunch.salsa-de-camaron.name.es">Salsa de camarón</span><span data-lang="en" id="fuertes.extras_lunch.salsa-de-camaron.name.en">Shrimp sauce</span></span><span class="extra-price" id="fuertes.extras_lunch.salsa-de-camaron.price">$4.75</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_lunch.chifles.name.es">Chifles</span><span data-lang="en" id="fuertes.extras_lunch.chifles.name.en">Plantain chips</span></span><span class="extra-price" id="fuertes.extras_lunch.chifles.price">$0.75</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_lunch.queso.name.es">Queso</span><span data-lang="en" id="fuertes.extras_lunch.queso.name.en">Cheese</span></span><span class="extra-price" id="fuertes.extras_lunch.queso.price">$1.00</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_lunch.arroz.name.es">Arroz</span><span data-lang="en" id="fuertes.extras_lunch.arroz.name.en">Rice</span></span><span class="extra-price" id="fuertes.extras_lunch.arroz.price">$1.75</span></div>
+<div class="extra-item"><span class="extra-name"><span data-lang="es" id="fuertes.extras_lunch.moros.name.es">Moros</span><span data-lang="en" id="fuertes.extras_lunch.moros.name.en">Moro rice</span></span><span class="extra-price" id="fuertes.extras_lunch.moros.price">$3.75</span></div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<div class="badges fade-up">
+<div class="badge"><div class="bicon">✦</div><div class="blabel"><span data-lang="es">Porciones Generosas</span><span data-lang="en">Generous Portions</span></div></div>
+<div class="badge"><div class="bicon">✦</div><div class="blabel"><span data-lang="es">Recetas de Casa</span><span data-lang="en">House Recipes</span></div></div>
+<div class="badge"><div class="bicon">✦</div><div class="blabel"><span data-lang="es">Sabor de Siempre</span><span data-lang="en">Timeless Flavor</span></div></div>
+</div>
+</section>
+<section class="hidden" id="menu-picadas">
+<div class="cover">
+<div class="cover-inner">
+<div class="cover-eyebrow">Jama Guayaca &amp; Drinks</div>
+<div class="cover-title"><span data-lang="es">Picadas</span><span data-lang="en">Bites</span></div>
+<div class="cover-accent"><span data-lang="es">Para compartir, ideales con un trago</span><span data-lang="en">Perfect for sharing, great with a drink</span></div>
+<img alt="MonoBolón" class="cover-logo-sm" src="images/logo/monobolon.png"/>
+</div>
+</div>
+<nav class="nav">
+<div class="nav-inner">
+<a class="nav-btn" href="#picaditas"><span data-lang="es">PICADITAS</span><span data-lang="en">BITES</span></a>
+<a class="nav-btn" href="#torta"><span data-lang="es">TORTA DE VERDE</span><span data-lang="en">PLANTAIN CAKE</span></a>
+</div>
+</nav>
+<main>
+<section class="section" id="picaditas">
+<h2 class="section-title fade-up"><span class="accent"><span data-lang="es">PICADITAS</span><span data-lang="en">BITES</span></span></h2>
+<div class="section-note fade-up"><span data-lang="es">Para compartir.</span><span data-lang="en">Perfect for the table.</span></div>
+<div class="ff-card fade-up">
+<div class="ff-img landscape"><img alt="Maduro Lampreado (Emborrajado)" id="picadas.platos.maduro-lampreado-emborrajado.image" src="images/platos/maduro-lampreado-emborrajado.jpg"/></div>
+<div class="ff-body"><div><div class="ff-name"><span data-lang="es" id="picadas.platos.maduro-lampreado-emborrajado.name.es">Maduro Lampreado (Emborrajado)</span><span data-lang="en" id="picadas.platos.maduro-lampreado-emborrajado.name.en">Battered Ripe Plantain (Lampreado)</span></div></div><div class="ff-price" id="picadas.platos.maduro-lampreado-emborrajado.price">$2.75</div></div>
+</div>
+<div class="ff-card fade-up">
+<div class="ff-img"><img alt="Corviche" id="picadas.platos.corviche.image" src="images/platos/corviche.jpg"/></div>
+<div class="ff-body"><div><div class="ff-name" id="picadas.platos.corviche.name">Corviche</div><div class="ff-desc"><span data-lang="es" id="picadas.platos.corviche.desc.es">De atún (1u) $2.75 · Mixto (1u) $4.00</span><span data-lang="en" id="picadas.platos.corviche.desc.en">Tuna (1pc) $2.75 · Mixed (1pc) $4.00</span></div></div></div>
+</div>
+<div class="ff-card fade-up">
+<div class="ff-img landscape"><img alt="Monopops" id="picadas.platos.monopops.image" src="images/platos/monopops.jpg"/></div>
+<div class="ff-body"><div><div class="ff-name" id="picadas.platos.monopops.name">Monopops</div><div class="ff-desc"><span data-lang="es" id="picadas.platos.monopops.desc.es">Croquetas crujientes de plátano verde rellenas de queso cheddar fundido con jalapeño, acompañadas de nuestra salsa roja de la casa. · x10 $3.85 · x20 $6.90</span><span data-lang="en" id="picadas.platos.monopops.desc.en">Crispy green plantain croquettes filled with melted cheddar and jalapeño, served with our house red sauce. · x10 $3.85 · x20 $6.90</span></div></div></div>
+</div>
+<div class="ff-card fade-up">
+<div class="ff-img landscape"><img alt="Drumettes" id="picadas.platos.drumettes.image" src="images/platos/drumettes.jpg"/></div>
+<div class="ff-body"><div><div class="ff-name" id="picadas.platos.drumettes.name">Drumettes</div><div class="ff-desc"><span data-lang="es" id="picadas.platos.drumettes.desc.es">Piernitas de pollo caramelizadas en nuestra salsa de la casa. · x6 $9.95 · x12 $16.75</span><span data-lang="en" id="picadas.platos.drumettes.desc.en">Chicken drumettes caramelized in our house sauce. · x6 $9.95 · x12 $16.75</span></div></div></div>
+</div>
+<div class="ff-card fade-up">
+<div class="ff-img landscape"><img alt="Copa Mexicana" id="picadas.platos.copa-mexicana.image" src="images/platos/copa-mexicana.jpg"/></div>
+<div class="ff-body"><div><div class="ff-name" id="picadas.platos.copa-mexicana.name">Copa Mexicana</div><div class="ff-desc"><span data-lang="es" id="picadas.platos.copa-mexicana.desc.es">Capas de carne sazonada, tocino, menestra, queso maduro, guacamole fresco y crema agria, acompañada de crujientes nachos de trigo.</span><span data-lang="en" id="picadas.platos.copa-mexicana.desc.en">Layers of seasoned beef, bacon, bean stew, aged cheese, fresh guacamole and sour cream, served with crispy wheat nachos.</span></div></div><div class="ff-price" id="picadas.platos.copa-mexicana.price">$8.63</div></div>
+</div>
+<div class="drinks-cols fade-up">
+<div>
+<div class="drink-item"><span><span data-lang="es" id="picadas.precios.pudin-de-maduro.name.es">Pudín de maduro</span><span data-lang="en" id="picadas.precios.pudin-de-maduro.name.en">Ripe plantain pudding</span></span><b id="picadas.precios.pudin-de-maduro.price">$2.25</b></div>
+<div class="drink-item"><span><span data-lang="es" id="picadas.precios.lampreado-180g-emborrajado.name.es">Lampreado (180g) emborrajado</span><span data-lang="en" id="picadas.precios.lampreado-180g-emborrajado.name.en">Battered lampreado (180g)</span></span><b id="picadas.precios.lampreado-180g-emborrajado.price">$2.75</b></div>
+<div class="drink-item"><span><span data-lang="es" id="picadas.precios.corviche-de-atun-1-u.name.es">Corviche de atún (1 u.)</span><span data-lang="en" id="picadas.precios.corviche-de-atun-1-u.name.en">Tuna corviche (1 pc)</span></span><b id="picadas.precios.corviche-de-atun-1-u.price">$2.75</b></div>
+<div class="drink-item"><span><span data-lang="es" id="picadas.precios.corviche-mixto-1-u.name.es">Corviche mixto (1 u.)</span><span data-lang="en" id="picadas.precios.corviche-mixto-1-u.name.en">Mixed corviche (1 pc)</span></span><b id="picadas.precios.corviche-mixto-1-u.price">$4.00</b></div>
+<div class="drink-item"><span><span data-lang="es" id="picadas.precios.patacones-y-maduro-con-queso-8-u.name.es">Patacones y maduro con queso (8 u.)</span><span data-lang="en" id="picadas.precios.patacones-y-maduro-con-queso-8-u.name.en">Patacones &amp; ripe plantain with cheese (8 pc)</span></span><b id="picadas.precios.patacones-y-maduro-con-queso-8-u.price">$3.00</b></div>
+</div>
+<div>
+<div class="drink-item"><span><span data-lang="es" id="picadas.precios.croquetas-de-yuca-2-u.name.es">Croquetas de yuca (2 u.)</span><span data-lang="en" id="picadas.precios.croquetas-de-yuca-2-u.name.en">Yuca croquettes (2 pc)</span></span><b id="picadas.precios.croquetas-de-yuca-2-u.price">$2.75</b></div>
+<div class="drink-item"><span><span data-lang="es" id="picadas.precios.croquetas-de-verde-2-u.name.es">Croquetas de verde (2 u.)</span><span data-lang="en" id="picadas.precios.croquetas-de-verde-2-u.name.en">Green plantain croquettes (2 pc)</span></span><b id="picadas.precios.croquetas-de-verde-2-u.price">$2.75</b></div>
+<div class="drink-item"><span><span data-lang="es" id="picadas.precios.croquetas-duo-verde-y-yuca-2-u.name.es">Croquetas duo verde y yuca (2 u.)</span><span data-lang="en" id="picadas.precios.croquetas-duo-verde-y-yuca-2-u.name.en">Duo green plantain &amp; yuca croquettes (2 pc)</span></span><b id="picadas.precios.croquetas-duo-verde-y-yuca-2-u.price">$2.75</b></div>
+<div class="drink-item"><span><span data-lang="es" id="picadas.precios.croquetas-de-yuca-mixta-2-u.name.es">Croquetas de yuca mixta (2 u.)</span><span data-lang="en" id="picadas.precios.croquetas-de-yuca-mixta-2-u.name.en">Mixed yuca croquettes (2 pc)</span></span><b id="picadas.precios.croquetas-de-yuca-mixta-2-u.price">$3.75</b></div>
+<div class="drink-item"><span><span data-lang="es" id="picadas.precios.empanada-de-verde-con-queso-1-u.name.es">Empanada de verde con queso (1 u.)</span><span data-lang="en" id="picadas.precios.empanada-de-verde-con-queso-1-u.name.en">Green plantain &amp; cheese empanada (1 pc)</span></span><b id="picadas.precios.empanada-de-verde-con-queso-1-u.price">$1.95</b></div>
+</div>
+</div>
+</section>
+<div class="tax-note"><span data-lang="es">★ Todos nuestros precios incluyen impuestos</span><span data-lang="en">★ All prices include tax</span></div>
+<section class="section" id="torta">
+<div class="toppings-title fade-up"><span data-lang="es">TORTA DE VERDE</span><span data-lang="en">GREEN PLANTAIN CAKE</span></div>
+<div class="toppings-sub fade-up"><span data-lang="es">¡Que viva el cumpleañero!</span><span data-lang="en">Long live the birthday star!</span></div>
+<div class="drinks-cols fade-up">
+<div>
+<div class="drink-item"><span><span data-lang="es" id="picadas.torta.torta-mediana-de-queso-10-porciones.name.es">Torta mediana de queso (10 porciones)</span><span data-lang="en" id="picadas.torta.torta-mediana-de-queso-10-porciones.name.en">Medium cheese cake (10 servings)</span></span><b id="picadas.torta.torta-mediana-de-queso-10-porciones.price">$20</b></div>
+<div class="drink-item"><span><span data-lang="es" id="picadas.torta.torta-mediana-mixta-10-porciones.name.es">Torta mediana mixta (10 porciones)</span><span data-lang="en" id="picadas.torta.torta-mediana-mixta-10-porciones.name.en">Medium mixed cake (10 servings)</span></span><b id="picadas.torta.torta-mediana-mixta-10-porciones.price">$25</b></div>
+</div>
+<div>
+<div class="drink-item"><span><span data-lang="es" id="picadas.torta.torta-grande-de-queso-14-porciones.name.es">Torta grande de queso (14 porciones)</span><span data-lang="en" id="picadas.torta.torta-grande-de-queso-14-porciones.name.en">Large cheese cake (14 servings)</span></span><b id="picadas.torta.torta-grande-de-queso-14-porciones.price">$30</b></div>
+<div class="drink-item"><span><span data-lang="es" id="picadas.torta.torta-grande-mixta-14-porciones.name.es">Torta grande mixta (14 porciones)</span><span data-lang="en" id="picadas.torta.torta-grande-mixta-14-porciones.name.en">Large mixed cake (14 servings)</span></span><b id="picadas.torta.torta-grande-mixta-14-porciones.price">$35</b></div>
+</div>
+</div>
+</section>
+</main>
+<div class="badges fade-up">
+<div class="badge"><div class="bicon">✦</div><div class="blabel"><span data-lang="es">Ideal para Compartir</span><span data-lang="en">Great for Sharing</span></div></div>
+<div class="badge"><div class="bicon">✦</div><div class="blabel"><span data-lang="es">Crocantes y Recién Hechas</span><span data-lang="en">Crispy &amp; Freshly Made</span></div></div>
+<div class="badge"><div class="bicon">✦</div><div class="blabel"><span data-lang="es">El Plan Perfecto</span><span data-lang="en">The Perfect Plan</span></div></div>
+</div>
+</section>
+<section class="hidden" id="menu-bebidas">
+<div class="cover">
+<div class="cover-inner">
+<div class="cover-eyebrow">Jama Guayaca &amp; Drinks</div>
+<div class="cover-title"><span data-lang="es">Bebidas</span><span data-lang="en">Drinks</span></div>
+<div class="cover-accent"><span data-lang="es">Frutas naturales, café recién hecho</span><span data-lang="en">Natural fruit, freshly brewed coffee</span></div>
+<img alt="MonoBolón" class="cover-logo-sm" src="images/logo/monobolon.png"/>
+</div>
+</div>
+<div class="subchoice">
+<button class="subchoice-btn active" data-sub="soft" onclick="showSubBebidas(this,'soft')">
+<span class="sc-name"><span data-lang="es">BEBIDAS SOFT</span><span data-lang="en">SOFT DRINKS</span></span>
+<span class="sc-sub"><span data-lang="es">Jugos, gaseosas y café</span><span data-lang="en">Juices, sodas &amp; coffee</span></span>
+</button>
+<button class="subchoice-btn" data-sub="cocteles" onclick="showSubBebidas(this,'cocteles')">
+<span class="sc-name">CÓCTELES</span>
+<span class="sc-sub"><span data-lang="es">Barra MonoBolón</span><span data-lang="en">MonoBolón Bar</span></span>
+</button>
+</div>
+<main>
+<!-- ===== SUBVIEW: BEBIDAS SOFT ===== -->
+<div class="subview" id="sub-bebidas-soft">
+<nav class="nav">
+<div class="nav-inner">
+<a class="nav-btn" href="#bebidas-frias"><span data-lang="es">FRÍAS &amp; JUGOS</span><span data-lang="en">COLD &amp; JUICES</span></a>
+<a class="nav-btn" href="#bebidas-calientes"><span data-lang="es">CALIENTES</span><span data-lang="en">HOT</span></a>
+</div>
+</nav>
+<section class="section" id="bebidas-frias">
+<h2 class="section-title fade-up"><span class="accent"><span data-lang="es">BEBIDAS</span><span data-lang="en">DRINKS</span></span></h2>
+<div class="section-note fade-up"><span data-lang="es">Para acompañar.</span><span data-lang="en">To go with your meal.</span></div>
+<div class="masa-hero fade-up" style="max-width:260px;aspect-ratio:1/1;"><img alt="Jugos naturales MonoBolón" id="bebidas.frias.hero_image" src="images/hero/jugos-naturales-monobolon.jpg"/></div>
+<div class="drink-category"><span data-lang="es">FRÍAS</span><span data-lang="en">COLD</span></div>
+<div class="drink-group fade-up">
+<div class="drink-item"><span><span data-lang="es" id="bebidas.frias.agua.name.es">Agua</span><span data-lang="en" id="bebidas.frias.agua.name.en">Water</span></span><b id="bebidas.frias.agua.price">$1.50</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bebidas.frias.agua-mineral.name.es">Agua mineral</span><span data-lang="en" id="bebidas.frias.agua-mineral.name.en">Sparkling water</span></span><b id="bebidas.frias.agua-mineral.price">$1.50</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bebidas.frias.gaseosas-original-light-zero-sprite-fuze-tea.name.es">Gaseosas (original, light, zero, sprite, fuze tea)</span><span data-lang="en" id="bebidas.frias.gaseosas-original-light-zero-sprite-fuze-tea.name.en">Sodas (regular, light, zero, sprite, fuze tea)</span></span><b id="bebidas.frias.gaseosas-original-light-zero-sprite-fuze-tea.price">$1.80</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bebidas.frias.cerveza-club.name.es">Cerveza Club</span><span data-lang="en" id="bebidas.frias.cerveza-club.name.en">Club Beer</span></span><b id="bebidas.frias.cerveza-club.price">$3.75</b></div>
+<div class="drink-item"><span id="bebidas.frias.tinto-de-verano.name">Tinto de Verano</span><b id="bebidas.frias.tinto-de-verano.price">$5.75</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bebidas.frias.latte-frapeado.name.es">Latte frapeado</span><span data-lang="en" id="bebidas.frias.latte-frapeado.name.en">Iced latte</span></span><b id="bebidas.frias.latte-frapeado.price">$2.85</b></div>
+</div>
+<div class="drink-category"><span data-lang="es">JUGOS &amp; BATIDOS</span><span data-lang="en">JUICES &amp; SMOOTHIES</span></div>
+<div class="drink-group fade-up">
+<div class="drink-item"><span><span data-lang="es" id="bebidas.frias.jugo-de-mora.name.es">Jugo de mora</span><span data-lang="en" id="bebidas.frias.jugo-de-mora.name.en">Blackberry juice</span></span><b id="bebidas.frias.jugo-de-mora.price">$2.50</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bebidas.frias.jugo-de-frutas-tropicales.name.es">Jugo de frutas tropicales</span><span data-lang="en" id="bebidas.frias.jugo-de-frutas-tropicales.name.en">Tropical fruit juice</span></span><b id="bebidas.frias.jugo-de-frutas-tropicales.price">$2.50</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bebidas.frias.jugo-de-guanabana.name.es">Jugo de guanábana</span><span data-lang="en" id="bebidas.frias.jugo-de-guanabana.name.en">Soursop juice</span></span><b id="bebidas.frias.jugo-de-guanabana.price">$2.50</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bebidas.frias.jugo-de-guanamora.name.es">Jugo de guanamora</span><span data-lang="en" id="bebidas.frias.jugo-de-guanamora.name.en">Guanamora juice</span></span><b id="bebidas.frias.jugo-de-guanamora.price">$2.50</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bebidas.frias.jugo-de-naranja.name.es">Jugo de naranja</span><span data-lang="en" id="bebidas.frias.jugo-de-naranja.name.en">Orange juice</span></span><b id="bebidas.frias.jugo-de-naranja.price">$2.75</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bebidas.frias.batido-de-mora.name.es">Batido de mora</span><span data-lang="en" id="bebidas.frias.batido-de-mora.name.en">Blackberry smoothie</span></span><b id="bebidas.frias.batido-de-mora.price">$3.00</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bebidas.frias.batido-de-naranjilla.name.es">Batido de naranjilla</span><span data-lang="en" id="bebidas.frias.batido-de-naranjilla.name.en">Naranjilla smoothie</span></span><b id="bebidas.frias.batido-de-naranjilla.price">$3.00</b></div>
+</div>
+</section>
+<div class="tax-note"><span data-lang="es">★ Todos nuestros precios incluyen impuestos</span><span data-lang="en">★ All prices include tax</span></div>
+<section class="section" id="bebidas-calientes">
+<div class="drink-category"><span data-lang="es">CALIENTES</span><span data-lang="en">HOT</span></div>
+<div class="drink-group fade-up">
+<div class="drink-item"><span><span data-lang="es" id="bebidas.calientes.cafe-americano.name.es">Café americano</span><span data-lang="en" id="bebidas.calientes.cafe-americano.name.en">American coffee</span></span><b id="bebidas.calientes.cafe-americano.price">$1.75</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bebidas.calientes.cafe-americano-filtrado.name.es">Café americano filtrado</span><span data-lang="en" id="bebidas.calientes.cafe-americano-filtrado.name.en">Filtered American coffee</span></span><b id="bebidas.calientes.cafe-americano-filtrado.price">$1.75</b></div>
+<div class="drink-item"><span id="bebidas.calientes.espresso.name">Espresso</span><b id="bebidas.calientes.espresso.price">$0.95</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bebidas.calientes.te-anis-cedron-verde-toronjil-hierbaluisa-manzana-canela-manzanilla-manzanilla-miel.name.es">Té (anís, cedrón, verde, toronjil, hierbaluisa, manzana canela, manzanilla, manzanilla miel)</span><span data-lang="en" id="bebidas.calientes.te-anis-cedron-verde-toronjil-hierbaluisa-manzana-canela-manzanilla-manzanilla-miel.name.en">Tea (anise, verbena, green, lemon balm, lemongrass, apple cinnamon, chamomile, honey chamomile)</span></span><b id="bebidas.calientes.te-anis-cedron-verde-toronjil-hierbaluisa-manzana-canela-manzanilla-manzanilla-miel.price">$1.50</b></div>
+</div>
+<div class="drink-category"><span data-lang="es">CON LECHE</span><span data-lang="en">WITH MILK</span></div>
+<div class="drink-group fade-up">
+<div class="drink-item"><span id="bebidas.calientes.mocaccino.name">Mocaccino</span><b id="bebidas.calientes.mocaccino.price">$2.35</b></div>
+<div class="drink-item"><span id="bebidas.calientes.cortado.name">Cortado</span><b id="bebidas.calientes.cortado.price">$2.25</b></div>
+<div class="drink-item"><span id="bebidas.calientes.capuccino.name">Capuccino</span><b id="bebidas.calientes.capuccino.price">$2.25</b></div>
+<div class="drink-item"><span><span data-lang="es" id="bebidas.calientes.chocolate-caliente.name.es">Chocolate caliente</span><span data-lang="en" id="bebidas.calientes.chocolate-caliente.name.en">Hot chocolate</span></span><b id="bebidas.calientes.chocolate-caliente.price">$2.35</b></div>
+</div>
+</section>
+</div>
+<!-- ===== END SUBVIEW: BEBIDAS SOFT ===== -->
+<!-- ===== SUBVIEW: CÓCTELES ===== -->
+<div class="subview hidden" id="sub-bebidas-cocteles">
+<section class="section" id="cocteles">
+<h2 class="section-title fade-up"><span class="accent"><span data-lang="es">CÓCTELES</span><span data-lang="en">COCKTAILS</span></span></h2>
+<div class="section-note fade-up"><span data-lang="es">Barra MonoBolón · $8.95 cada uno</span><span data-lang="en">MonoBolón Bar · $8.95 each</span></div>
+<div class="subchoice" style="max-width:420px;padding-top:6px;">
+<button class="subchoice-btn active" data-sub="clasicos" onclick="showCocktailCat(this,'clasicos')">
+<span class="sc-name"><span data-lang="es">CLÁSICOS</span><span data-lang="en">CLASSICS</span></span>
+<span class="sc-sub"><span data-lang="es">7 recetas de barra</span><span data-lang="en">7 bar classics</span></span>
+</button>
+<button class="subchoice-btn" data-sub="autor" onclick="showCocktailCat(this,'autor')">
+<span class="sc-name"><span data-lang="es">DE AUTOR</span><span data-lang="en">SIGNATURE</span></span>
+<span class="sc-sub"><span data-lang="es">Próximamente</span><span data-lang="en">Coming soon</span></span>
+</button>
+</div>
+<div class="cocktail-cat" id="cocktail-clasicos">
+<div class="cocktail-card fade-up">
+<div class="cocktail-top"><span class="cocktail-name" id="bebidas.cocteles.mojito.name">Mojito</span><span class="cocktail-price" id="bebidas.cocteles.mojito.price">$8.95</span></div>
+<div class="cocktail-desc"><span data-lang="es" id="bebidas.cocteles.mojito.desc.es">Ron blanco, hierbabuena fresca machacada, lima, azúcar y un toque de soda. El clásico cubano que refresca cualquier noche.</span><span data-lang="en" id="bebidas.cocteles.mojito.desc.en">White rum, fresh muddled mint, lime, sugar and a splash of soda. The Cuban classic that cools down any night.</span></div>
+<div class="cocktail-ings"><span class="ing-tag"><span data-lang="es">Ron blanco</span><span data-lang="en">White rum</span></span><span class="ing-tag"><span data-lang="es">Hierbabuena</span><span data-lang="en">Mint</span></span><span class="ing-tag">Lima</span><span class="ing-tag">Soda</span></div>
+</div>
+<div class="cocktail-card fade-up">
+<div class="cocktail-top"><span class="cocktail-name" id="bebidas.cocteles.caipirinha.name">Caipirinha</span><span class="cocktail-price" id="bebidas.cocteles.caipirinha.price">$8.95</span></div>
+<div class="cocktail-desc"><span data-lang="es" id="bebidas.cocteles.caipirinha.desc.es">Cachaça brasileña macerada con limón y azúcar directamente en el vaso. Rústica, directa y con carácter.</span><span data-lang="en" id="bebidas.cocteles.caipirinha.desc.en">Brazilian cachaça muddled with lime and sugar right in the glass. Rustic, direct and full of character.</span></div>
+<div class="cocktail-ings"><span class="ing-tag">Cachaça</span><span class="ing-tag"><span data-lang="es">Limón</span><span data-lang="en">Lime</span></span><span class="ing-tag"><span data-lang="es">Azúcar</span><span data-lang="en">Sugar</span></span></div>
+</div>
+<div class="cocktail-card fade-up">
+<div class="cocktail-top"><span class="cocktail-name" id="bebidas.cocteles.moscow-mule.name">Moscow Mule</span><span class="cocktail-price" id="bebidas.cocteles.moscow-mule.price">$8.95</span></div>
+<div class="cocktail-desc"><span data-lang="es" id="bebidas.cocteles.moscow-mule.desc.es">Vodka, ginger beer picante y un chorro de lima, servido en su clásico jarro de cobre. Burbujeante y refrescante.</span><span data-lang="en" id="bebidas.cocteles.moscow-mule.desc.en">Vodka, spicy ginger beer and a splash of lime, served in its classic copper mug. Bubbly and refreshing.</span></div>
+<div class="cocktail-ings"><span class="ing-tag">Vodka</span><span class="ing-tag">Ginger beer</span><span class="ing-tag">Lima</span></div>
+</div>
+<div class="cocktail-card fade-up">
+<div class="cocktail-top"><span class="cocktail-name" id="bebidas.cocteles.old-fashioned.name">Old Fashioned</span><span class="cocktail-price" id="bebidas.cocteles.old-fashioned.price">$8.95</span></div>
+<div class="cocktail-desc"><span data-lang="es" id="bebidas.cocteles.old-fashioned.desc.es">Whisky bourbon, azúcar, bitter de angostura y una twist de naranja sobre hielo. El padre de todos los cócteles.</span><span data-lang="en" id="bebidas.cocteles.old-fashioned.desc.en">Bourbon whiskey, sugar, angostura bitters and an orange twist over ice. The father of all cocktails.</span></div>
+<div class="cocktail-ings"><span class="ing-tag">Bourbon</span><span class="ing-tag"><span data-lang="es">Azúcar</span><span data-lang="en">Sugar</span></span><span class="ing-tag"><span data-lang="es">Bitter angostura</span><span data-lang="en">Angostura bitters</span></span><span class="ing-tag"><span data-lang="es">Naranja</span><span data-lang="en">Orange</span></span></div>
+</div>
+<div class="cocktail-card fade-up">
+<div class="cocktail-top"><span class="cocktail-name" id="bebidas.cocteles.negroni.name">Negroni</span><span class="cocktail-price" id="bebidas.cocteles.negroni.price">$8.95</span></div>
+<div class="cocktail-desc"><span data-lang="es" id="bebidas.cocteles.negroni.desc.es">Gin, Campari y vermouth rosso en partes iguales. Amargo, elegante y sin miedo a decirlo.</span><span data-lang="en" id="bebidas.cocteles.negroni.desc.en">Gin, Campari and rosso vermouth in equal parts. Bitter, elegant and unafraid to say so.</span></div>
+<div class="cocktail-ings"><span class="ing-tag">Gin</span><span class="ing-tag">Campari</span><span class="ing-tag">Vermouth Rosso</span></div>
+</div>
+<div class="cocktail-card fade-up">
+<div class="cocktail-top"><span class="cocktail-name" id="bebidas.cocteles.margarita.name">Margarita</span><span class="cocktail-price" id="bebidas.cocteles.margarita.price">$8.95</span></div>
+<div class="cocktail-desc"><span data-lang="es" id="bebidas.cocteles.margarita.desc.es">Tequila, Triple Sec y jugo de limón fresco, servida con o sin escarcha de sal. El clásico mexicano por excelencia.</span><span data-lang="en" id="bebidas.cocteles.margarita.desc.en">Tequila, Triple Sec and fresh lime juice, served with or without a salt rim. The Mexican classic, no explanation needed.</span></div>
+<div class="cocktail-ings"><span class="ing-tag">Tequila</span><span class="ing-tag">Triple Sec</span><span class="ing-tag"><span data-lang="es">Limón</span><span data-lang="en">Lime</span></span></div>
+</div>
+<div class="cocktail-card fade-up">
+<div class="cocktail-top"><span class="cocktail-name"><span data-lang="es" id="bebidas.cocteles.pina-colada.name.es">Piña Colada</span><span data-lang="en" id="bebidas.cocteles.pina-colada.name.en">Piña Colada</span></span><span class="cocktail-price" id="bebidas.cocteles.pina-colada.price">$8.95</span></div>
+<div class="cocktail-desc"><span data-lang="es" id="bebidas.cocteles.pina-colada.desc.es">Ron blanco, crema de coco y jugo de piña, licuados con hielo hasta quedar cremosa. Playa en cada sorbo.</span><span data-lang="en" id="bebidas.cocteles.pina-colada.desc.en">White rum, coconut cream and pineapple juice, blended with ice until creamy. Beach in every sip.</span></div>
+<div class="cocktail-ings"><span class="ing-tag"><span data-lang="es">Ron blanco</span><span data-lang="en">White rum</span></span><span class="ing-tag"><span data-lang="es">Crema de coco</span><span data-lang="en">Coconut cream</span></span><span class="ing-tag"><span data-lang="es">Piña</span><span data-lang="en">Pineapple</span></span></div>
+</div>
+</div>
+<div class="cocktail-cat hidden" id="cocktail-autor">
+<div class="autor-soon fade-up"><span data-lang="es">Estamos afinando detalles para que disfrutes de nuestras creaciones.</span><span data-lang="en">We're fine-tuning the details so you can enjoy our creations.</span></div>
+</div>
+</section>
+</div>
+<!-- ===== END SUBVIEW: CÓCTELES ===== -->
+</main>
+<div class="badges fade-up">
+<div class="badge"><div class="bicon">✦</div><div class="blabel"><span data-lang="es">Frutas Naturales</span><span data-lang="en">Natural Fruit</span></div></div>
+<div class="badge"><div class="bicon">✦</div><div class="blabel"><span data-lang="es">Preparación al Momento</span><span data-lang="en">Made to Order</span></div></div>
+<div class="badge"><div class="bicon">✦</div><div class="blabel"><span data-lang="es">Para Refrescar tu Día</span><span data-lang="en">To Refresh Your Day</span></div></div>
+</div>
+</section>
+<section class="manifesto-section fade-up">
+<div class="manifesto-title"><span data-lang="es">SABOR AUTÉNTICO<br/>HECHO CON TRADICIÓN</span><span data-lang="en">AUTHENTIC FLAVOR<br/>MADE WITH TRADITION</span></div>
+<div class="manifesto-p"><span data-lang="es">En MonoBolón creemos en la receta de siempre: masa verde bien hecha, relleno generoso y el sabor guayaco que se sirve caliente, recién armado, para cada cliente.</span><span data-lang="en">At MonoBolón we believe in the recipe that never changes: well-made green plantain dough, generous fillings, and authentic Guayaquil flavor served hot, freshly assembled, for every customer.</span></div>
+<div class="manifesto-logo">
+<div class="ml-sub">JAMA GUAYACA &amp; DRINKS</div>
+</div>
+</section>
+<footer class="site-footer">
+<img alt="MonoBolón" src="images/logo/monobolon.png"/>
+<div class="tag"><span data-lang="es">JAMA GUAYACA &amp; DRINKS · EL AUTÉNTICO SABOR GUAYACO</span><span data-lang="en">JAMA GUAYACA &amp; DRINKS · THE AUTHENTIC GUAYAQUIL FLAVOR</span></div>
+<div class="note" style="margin-top:14px;font-size:12px;color:var(--gold);letter-spacing:.05em;"><span data-lang="es">LUNES A DOMINGO · 7H00 – 15H00</span><span data-lang="en">MONDAY TO SUNDAY · 7:00 AM – 3:00 PM</span></div>
+<div class="note">República de El Salvador · Sector El Bosque · CC. Centro Plaza — Quito, Ecuador</div>
+<div class="note" style="margin-top:10px;"><span data-lang="es">Síguenos: Instagram &amp; Facebook @monobolon</span><span data-lang="en">Follow us: Instagram &amp; Facebook @monobolon</span></div>
+<div class="note" style="margin-top:14px;opacity:.6;"><span data-lang="es">Menú sujeto a cambios sin previo aviso.</span><span data-lang="en">Menu subject to change without notice.</span></div>
+</footer>
+</div>
+<div class="fab-wrap hidden" id="fabWrap">
+<div class="fab-options" id="fabOptions"></div>
+<button class="fab-main" id="fabMain" onclick="toggleFab()">
+<span id="fabLabel">Menú</span><span class="chev">▲</span>
+</button>
+</div>
+<a class="backtop" href="#top" id="backtop">↑</a>
+<script src="hydrate.js"></script>
+<script>
+const MENU_LABELS = {
+  'bolones-tigrillos':{es:'Bolones y Tigrillos',en:'Bolones & Tigrillos'},
+  desayunos:{es:'Desayunos',en:'Breakfast'},
+  fuertes:{es:'Platos Fuertes',en:'Main Dishes'},
+  picadas:{es:'Picadas',en:'Bites'},
+  bebidas:{es:'Bebidas',en:'Drinks'}
+};
+const MENU_ORDER = ['bolones-tigrillos','desayunos','fuertes','picadas','bebidas'];
+const state = { lang:'es', menu:null };
+
+function selectLang(lang){
+  state.lang = lang;
+  document.body.dataset.langActive = lang;
+  document.documentElement.lang = lang;
+  document.getElementById('gate-lang').classList.add('hidden');
+  setTimeout(()=>document.getElementById('gate-menu').classList.remove('hidden'), 350);
+}
+function backToLang(){
+  document.getElementById('gate-menu').classList.add('hidden');
+  setTimeout(()=>document.getElementById('gate-lang').classList.remove('hidden'), 350);
+}
+function selectMenu(menu){
+  state.menu = menu;
+  document.getElementById('gate-menu').classList.add('hidden');
+  setTimeout(()=>{
+    document.getElementById('gate-lang').classList.add('hidden');
+    document.getElementById('app').style.display = 'block';
+    document.getElementById('fabWrap').classList.remove('hidden');
+    showMenu(menu);
+    buildFab();
+    window.scrollTo(0,0);
+  }, 350);
+}
+function showMenu(menu){
+  state.menu = menu;
+  MENU_ORDER.forEach(m=>{
+    const el = document.getElementById('menu-'+m);
+    if(el) el.classList.toggle('hidden', m!==menu);
+  });
+  document.getElementById('fabLabel').textContent = MENU_LABELS[menu][state.lang];
+  buildFab();
+  document.querySelectorAll('.fade-up').forEach(el=>{
+    const r = el.getBoundingClientRect();
+    if(r.top < window.innerHeight){ el.classList.add('visible'); }
+  });
+}
+function setLang(lang){
+  state.lang = lang;
+  document.body.dataset.langActive = lang;
+  document.documentElement.lang = lang;
+  document.getElementById('langEsBtn').classList.toggle('active', lang==='es');
+  document.getElementById('langEnBtn').classList.toggle('active', lang==='en');
+  if(state.menu){ document.getElementById('fabLabel').textContent = MENU_LABELS[state.menu][lang]; }
+  buildFab();
+}
+function startOver(){
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('fabWrap').classList.add('hidden');
+  document.getElementById('gate-menu').classList.add('hidden');
+  document.getElementById('gate-lang').classList.remove('hidden');
+  window.scrollTo(0,0);
+}
+function buildFab(){
+  const wrap = document.getElementById('fabOptions');
+  wrap.innerHTML = '';
+  MENU_ORDER.filter(m=>m!==state.menu).forEach(m=>{
+    const btn = document.createElement('button');
+    btn.className = 'fab-option';
+    btn.textContent = MENU_LABELS[m][state.lang];
+    btn.onclick = ()=>{ showMenu(m); closeFab(); window.scrollTo(0,0); };
+    wrap.appendChild(btn);
+  });
+}
+function toggleFab(){ document.getElementById('fabWrap').classList.toggle('open'); }
+function closeFab(){ document.getElementById('fabWrap').classList.remove('open'); }
+
+function showSub(btn, key){
+  const nav = btn.closest('.subchoice');
+  nav.querySelectorAll('.subchoice-btn').forEach(b=>b.classList.toggle('active', b===btn));
+  const wrap = btn.closest('main') || btn.closest('section');
+  const bolones = document.getElementById('sub-bolones');
+  const tigrillo = document.getElementById('sub-tigrillo');
+  if(bolones) bolones.classList.toggle('hidden', key!=='bolones');
+  if(tigrillo) tigrillo.classList.toggle('hidden', key!=='tigrillo');
+  document.querySelectorAll('.fade-up').forEach(el=>{
+    const r = el.getBoundingClientRect();
+    if(r.top < window.innerHeight){ el.classList.add('visible'); }
+  });
+}
+
+function showSubFuertes(btn, key){
+  const nav = btn.closest('.subchoice');
+  nav.querySelectorAll('.subchoice-btn').forEach(b=>b.classList.toggle('active', b===btn));
+  const a = document.getElementById('sub-fuertes-especialidades');
+  const b = document.getElementById('sub-fuertes-lunch');
+  if(a) a.classList.toggle('hidden', key!=='especialidades');
+  if(b) b.classList.toggle('hidden', key!=='lunch');
+  document.querySelectorAll('.fade-up').forEach(el=>{
+    const r = el.getBoundingClientRect();
+    if(r.top < window.innerHeight){ el.classList.add('visible'); }
+  });
+}
+
+function showSubBebidas(btn, key){
+  const nav = btn.closest('.subchoice');
+  nav.querySelectorAll('.subchoice-btn').forEach(b=>b.classList.toggle('active', b===btn));
+  const soft = document.getElementById('sub-bebidas-soft');
+  const cocteles = document.getElementById('sub-bebidas-cocteles');
+  if(soft) soft.classList.toggle('hidden', key!=='soft');
+  if(cocteles) cocteles.classList.toggle('hidden', key!=='cocteles');
+  document.querySelectorAll('.fade-up').forEach(el=>{
+    const r = el.getBoundingClientRect();
+    if(r.top < window.innerHeight){ el.classList.add('visible'); }
+  });
+}
+
+function showCocktailCat(btn, key){
+  const nav = btn.closest('.subchoice');
+  nav.querySelectorAll('.subchoice-btn').forEach(b=>b.classList.toggle('active', b===btn));
+  const clasicos = document.getElementById('cocktail-clasicos');
+  const autor = document.getElementById('cocktail-autor');
+  if(clasicos) clasicos.classList.toggle('hidden', key!=='clasicos');
+  if(autor) autor.classList.toggle('hidden', key!=='autor');
+  document.querySelectorAll('.fade-up').forEach(el=>{
+    const r = el.getBoundingClientRect();
+    if(r.top < window.innerHeight){ el.classList.add('visible'); }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  document.getElementById('langEsBtn').classList.add('active');
+  var els = document.querySelectorAll('.fade-up');
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, {threshold:.1, rootMargin:'0px 0px -40px 0px'});
+  els.forEach(function(el,i){ el.style.transitionDelay=(i%5*60)+'ms'; io.observe(el); });
+
+  var backtop = document.getElementById('backtop');
+  window.addEventListener('scroll', function(){ backtop.classList.toggle('show', window.scrollY > 500); });
+
+  document.addEventListener('click', function(e){
+    const wrap = document.getElementById('fabWrap');
+    if(wrap && !wrap.contains(e.target)) closeFab();
+  });
+});
+</script>
+</body></html>

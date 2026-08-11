@@ -1,0 +1,182 @@
+{
+  "picaditas_platos": [
+    {
+      "id": "picadas.platos.maduro-lampreado-emborrajado",
+      "name": {
+        "es": "Maduro Lampreado (Emborrajado)",
+        "en": "Battered Ripe Plantain (Lampreado)"
+      },
+      "desc": null,
+      "price": "$2.75",
+      "image": "images/platos/maduro-lampreado-emborrajado.jpg"
+    },
+    {
+      "id": "picadas.platos.corviche",
+      "name": {
+        "es": "Corviche",
+        "en": "Corviche"
+      },
+      "desc": {
+        "es": "De atún (1u) $2.75 · Mixto (1u) $4.00",
+        "en": "Tuna (1pc) $2.75 · Mixed (1pc) $4.00"
+      },
+      "price": null,
+      "image": "images/platos/corviche.jpg"
+    },
+    {
+      "id": "picadas.platos.monopops",
+      "name": {
+        "es": "Monopops",
+        "en": "Monopops"
+      },
+      "desc": {
+        "es": "Croquetas crujientes de plátano verde rellenas de queso cheddar fundido con jalapeño, acompañadas de nuestra salsa roja de la casa. · x10 $3.85 · x20 $6.90",
+        "en": "Crispy green plantain croquettes filled with melted cheddar and jalapeño, served with our house red sauce. · x10 $3.85 · x20 $6.90"
+      },
+      "price": null,
+      "image": "images/platos/monopops.jpg"
+    },
+    {
+      "id": "picadas.platos.drumettes",
+      "name": {
+        "es": "Drumettes",
+        "en": "Drumettes"
+      },
+      "desc": {
+        "es": "Piernitas de pollo caramelizadas en nuestra salsa de la casa. · x6 $9.95 · x12 $16.75",
+        "en": "Chicken drumettes caramelized in our house sauce. · x6 $9.95 · x12 $16.75"
+      },
+      "price": null,
+      "image": "images/platos/drumettes.jpg"
+    },
+    {
+      "id": "picadas.platos.copa-mexicana",
+      "name": {
+        "es": "Copa Mexicana",
+        "en": "Copa Mexicana"
+      },
+      "desc": {
+        "es": "Capas de carne sazonada, tocino, menestra, queso maduro, guacamole fresco y crema agria, acompañada de crujientes nachos de trigo.",
+        "en": "Layers of seasoned beef, bacon, bean stew, aged cheese, fresh guacamole and sour cream, served with crispy wheat nachos."
+      },
+      "price": "$8.63",
+      "image": "images/platos/copa-mexicana.jpg"
+    }
+  ],
+  "picaditas_precios": [
+    {
+      "id": "picadas.precios.pudin-de-maduro",
+      "name": {
+        "es": "Pudín de maduro",
+        "en": "Ripe plantain pudding"
+      },
+      "price": "$2.25"
+    },
+    {
+      "id": "picadas.precios.lampreado-180g-emborrajado",
+      "name": {
+        "es": "Lampreado (180g) emborrajado",
+        "en": "Battered lampreado (180g)"
+      },
+      "price": "$2.75"
+    },
+    {
+      "id": "picadas.precios.corviche-de-atun-1-u",
+      "name": {
+        "es": "Corviche de atún (1 u.)",
+        "en": "Tuna corviche (1 pc)"
+      },
+      "price": "$2.75"
+    },
+    {
+      "id": "picadas.precios.corviche-mixto-1-u",
+      "name": {
+        "es": "Corviche mixto (1 u.)",
+        "en": "Mixed corviche (1 pc)"
+      },
+      "price": "$4.00"
+    },
+    {
+      "id": "picadas.precios.patacones-y-maduro-con-queso-8-u",
+      "name": {
+        "es": "Patacones y maduro con queso (8 u.)",
+        "en": "Patacones & ripe plantain with cheese (8 pc)"
+      },
+      "price": "$3.00"
+    },
+    {
+      "id": "picadas.precios.croquetas-de-yuca-2-u",
+      "name": {
+        "es": "Croquetas de yuca (2 u.)",
+        "en": "Yuca croquettes (2 pc)"
+      },
+      "price": "$2.75"
+    },
+    {
+      "id": "picadas.precios.croquetas-de-verde-2-u",
+      "name": {
+        "es": "Croquetas de verde (2 u.)",
+        "en": "Green plantain croquettes (2 pc)"
+      },
+      "price": "$2.75"
+    },
+    {
+      "id": "picadas.precios.croquetas-duo-verde-y-yuca-2-u",
+      "name": {
+        "es": "Croquetas duo verde y yuca (2 u.)",
+        "en": "Duo green plantain & yuca croquettes (2 pc)"
+      },
+      "price": "$2.75"
+    },
+    {
+      "id": "picadas.precios.croquetas-de-yuca-mixta-2-u",
+      "name": {
+        "es": "Croquetas de yuca mixta (2 u.)",
+        "en": "Mixed yuca croquettes (2 pc)"
+      },
+      "price": "$3.75"
+    },
+    {
+      "id": "picadas.precios.empanada-de-verde-con-queso-1-u",
+      "name": {
+        "es": "Empanada de verde con queso (1 u.)",
+        "en": "Green plantain & cheese empanada (1 pc)"
+      },
+      "price": "$1.95"
+    }
+  ],
+  "torta": [
+    {
+      "id": "picadas.torta.torta-mediana-de-queso-10-porciones",
+      "name": {
+        "es": "Torta mediana de queso (10 porciones)",
+        "en": "Medium cheese cake (10 servings)"
+      },
+      "price": "$20"
+    },
+    {
+      "id": "picadas.torta.torta-mediana-mixta-10-porciones",
+      "name": {
+        "es": "Torta mediana mixta (10 porciones)",
+        "en": "Medium mixed cake (10 servings)"
+      },
+      "price": "$25"
+    },
+    {
+      "id": "picadas.torta.torta-grande-de-queso-14-porciones",
+      "name": {
+        "es": "Torta grande de queso (14 porciones)",
+        "en": "Large cheese cake (14 servings)"
+      },
+      "price": "$30"
+    },
+    {
+      "id": "picadas.torta.torta-grande-mixta-14-porciones",
+      "name": {
+        "es": "Torta grande mixta (14 porciones)",
+        "en": "Large mixed cake (14 servings)"
+      },
+      "price": "$35"
+    }
+  ]
+}

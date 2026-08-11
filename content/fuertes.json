@@ -1,0 +1,587 @@
+{
+  "especiales": [
+    {
+      "id": "fuertes.especiales.moro",
+      "badge": {
+        "es": "MORO",
+        "en": "MORO"
+      },
+      "image": "images/especiales/moro.jpg",
+      "upsell": {
+        "es": "Agrega Salsa 4 Quesos por $3.45",
+        "en": "Add 4-Cheese Sauce for $3.45"
+      },
+      "lines": [
+        {
+          "id": "fuertes.especiales.moro.lines.0",
+          "name": {
+            "es": "Con bistec (pollo/carne/hígado)",
+            "en": "With steak (chicken/beef/liver)"
+          },
+          "price": "$10.50"
+        },
+        {
+          "id": "fuertes.especiales.moro.lines.1",
+          "name": {
+            "es": "Con seco de carne",
+            "en": "With beef stew"
+          },
+          "price": "$11.50"
+        },
+        {
+          "id": "fuertes.especiales.moro.lines.2",
+          "name": {
+            "es": "Con seco de pollo",
+            "en": "With chicken stew"
+          },
+          "price": "$11.50"
+        },
+        {
+          "id": "fuertes.especiales.moro.lines.3",
+          "name": {
+            "es": "Con salsa de queso + bistec",
+            "en": "With cheese sauce + steak"
+          },
+          "price": "$13.95"
+        },
+        {
+          "id": "fuertes.especiales.moro.lines.4",
+          "name": {
+            "es": "Con salsa de queso + seco de carne",
+            "en": "With cheese sauce + beef stew"
+          },
+          "price": "$14.95"
+        },
+        {
+          "id": "fuertes.especiales.moro.lines.5",
+          "name": {
+            "es": "Con salsa de queso + seco de pollo",
+            "en": "With cheese sauce + chicken stew"
+          },
+          "price": "$14.95"
+        }
+      ]
+    },
+    {
+      "id": "fuertes.especiales.bandera",
+      "badge": {
+        "es": "BANDERA",
+        "en": "BANDERA"
+      },
+      "image": "images/especiales/moro.jpg",
+      "upsell": null,
+      "lines": [
+        {
+          "id": "fuertes.especiales.bandera.lines.0",
+          "name": {
+            "es": "Con seco de carne, guatita o menestra",
+            "en": "With beef stew, tripe stew or lentil stew"
+          },
+          "price": "$12.75"
+        },
+        {
+          "id": "fuertes.especiales.bandera.lines.1",
+          "name": {
+            "es": "Con seco de pollo, guatita o menestra",
+            "en": "With chicken stew, tripe stew or lentil stew"
+          },
+          "price": "$12.75"
+        },
+        {
+          "id": "fuertes.especiales.bandera.lines.2",
+          "name": {
+            "es": "Con seco de chancho, guatita o menestra",
+            "en": "With pork stew, tripe stew or lentil stew"
+          },
+          "price": "$12.75"
+        }
+      ]
+    },
+    {
+      "id": "fuertes.especiales.bollo",
+      "badge": {
+        "es": "BOLLO",
+        "en": "BOLLO"
+      },
+      "image": null,
+      "upsell": null,
+      "lines": [
+        {
+          "id": "fuertes.especiales.bollo.lines.0",
+          "name": {
+            "es": "Pescado",
+            "en": "Fish"
+          },
+          "price": "$5.50"
+        },
+        {
+          "id": "fuertes.especiales.bollo.lines.1",
+          "name": {
+            "es": "Mixto",
+            "en": "Mixed"
+          },
+          "price": "$7.25"
+        }
+      ]
+    },
+    {
+      "id": "fuertes.especiales.encebollado",
+      "badge": {
+        "es": "ENCEBOLLADO",
+        "en": "ENCEBOLLADO"
+      },
+      "image": null,
+      "upsell": null,
+      "lines": [
+        {
+          "id": "fuertes.especiales.encebollado.lines.0",
+          "name": {
+            "es": "Normal",
+            "en": "Regular"
+          },
+          "price": "$4.99"
+        },
+        {
+          "id": "fuertes.especiales.encebollado.lines.1",
+          "name": {
+            "es": "Mixto",
+            "en": "Mixed"
+          },
+          "price": "$7.99"
+        }
+      ]
+    },
+    {
+      "id": "fuertes.especiales.cazuela",
+      "badge": {
+        "es": "CAZUELA",
+        "en": "CAZUELA"
+      },
+      "image": null,
+      "upsell": null,
+      "lines": [
+        {
+          "id": "fuertes.especiales.cazuela.lines.0",
+          "name": {
+            "es": "Albacora",
+            "en": "Albacore tuna"
+          },
+          "price": "$7.99"
+        },
+        {
+          "id": "fuertes.especiales.cazuela.lines.1",
+          "name": {
+            "es": "Camarón",
+            "en": "Shrimp"
+          },
+          "price": "$7.99"
+        },
+        {
+          "id": "fuertes.especiales.cazuela.lines.2",
+          "name": {
+            "es": "Mixta",
+            "en": "Mixed"
+          },
+          "price": "$8.99"
+        }
+      ]
+    },
+    {
+      "id": "fuertes.especiales.platos-fuertes",
+      "badge": {
+        "es": "PLATOS FUERTES",
+        "en": "MAIN DISHES"
+      },
+      "image": "images/especiales/platos-fuertes.jpg",
+      "upsell": null,
+      "lines": [
+        {
+          "id": "fuertes.especiales.platos-fuertes.lines.0",
+          "name": {
+            "es": "Guatita",
+            "en": "Tripe stew"
+          },
+          "price": "$8.50"
+        },
+        {
+          "id": "fuertes.especiales.platos-fuertes.lines.1",
+          "name": {
+            "es": "Bistec",
+            "en": "Steak"
+          },
+          "price": "$8.75"
+        },
+        {
+          "id": "fuertes.especiales.platos-fuertes.lines.2",
+          "name": {
+            "es": "Seco",
+            "en": "Stew"
+          },
+          "price": "$8.75"
+        },
+        {
+          "id": "fuertes.especiales.platos-fuertes.lines.3",
+          "name": {
+            "es": "Menestra",
+            "en": "Lentil stew"
+          },
+          "price": "$9.50"
+        }
+      ]
+    }
+  ],
+  "extras_especialidades": [
+    {
+      "id": "fuertes.extras_esp.maduro",
+      "name": {
+        "es": "Maduro",
+        "en": "Ripe plantain"
+      },
+      "price": "$2.00"
+    },
+    {
+      "id": "fuertes.extras_esp.maduro-con-queso",
+      "name": {
+        "es": "Maduro con queso",
+        "en": "Ripe plantain with cheese"
+      },
+      "price": "$3.00"
+    },
+    {
+      "id": "fuertes.extras_esp.patacon",
+      "name": {
+        "es": "Patacón",
+        "en": "Patacón"
+      },
+      "price": "$2.00"
+    },
+    {
+      "id": "fuertes.extras_esp.patacon-con-queso",
+      "name": {
+        "es": "Patacón con queso",
+        "en": "Patacón with cheese"
+      },
+      "price": "$3.00"
+    },
+    {
+      "id": "fuertes.extras_esp.huevos-revueltos-fritos-bien-fritos",
+      "name": {
+        "es": "Huevos revueltos / fritos / bien fritos",
+        "en": "Scrambled / fried / well-fried eggs"
+      },
+      "price": "$1.80"
+    },
+    {
+      "id": "fuertes.extras_esp.aguacate",
+      "name": {
+        "es": "Aguacate",
+        "en": "Avocado"
+      },
+      "price": "$1.50"
+    },
+    {
+      "id": "fuertes.extras_esp.chicharron",
+      "name": {
+        "es": "Chicharrón",
+        "en": "Crispy pork rind"
+      },
+      "price": "$2.25"
+    },
+    {
+      "id": "fuertes.extras_esp.guatita",
+      "name": {
+        "es": "Guatita",
+        "en": "Tripe stew"
+      },
+      "price": "$3.75"
+    },
+    {
+      "id": "fuertes.extras_esp.menestra",
+      "name": {
+        "es": "Menestra",
+        "en": "Lentil stew"
+      },
+      "price": "$3.50"
+    },
+    {
+      "id": "fuertes.extras_esp.salsa-de-queso",
+      "name": {
+        "es": "Salsa de queso",
+        "en": "Cheese sauce"
+      },
+      "price": "$1.50"
+    },
+    {
+      "id": "fuertes.extras_esp.pollo-mechado",
+      "name": {
+        "es": "Pollo mechado",
+        "en": "Shredded chicken"
+      },
+      "price": "$3.90"
+    },
+    {
+      "id": "fuertes.extras_esp.carne-mechada",
+      "name": {
+        "es": "Carne mechada",
+        "en": "Shredded beef"
+      },
+      "price": "$3.90"
+    },
+    {
+      "id": "fuertes.extras_esp.filete-de-carne-pollo",
+      "name": {
+        "es": "Filete de carne / pollo",
+        "en": "Beef / chicken fillet"
+      },
+      "price": "$4.24"
+    },
+    {
+      "id": "fuertes.extras_esp.salsa-de-camaron",
+      "name": {
+        "es": "Salsa de camarón",
+        "en": "Shrimp sauce"
+      },
+      "price": "$4.75"
+    },
+    {
+      "id": "fuertes.extras_esp.chifles",
+      "name": {
+        "es": "Chifles",
+        "en": "Plantain chips"
+      },
+      "price": "$0.75"
+    },
+    {
+      "id": "fuertes.extras_esp.queso",
+      "name": {
+        "es": "Queso",
+        "en": "Cheese"
+      },
+      "price": "$1.00"
+    },
+    {
+      "id": "fuertes.extras_esp.arroz",
+      "name": {
+        "es": "Arroz",
+        "en": "Rice"
+      },
+      "price": "$1.75"
+    },
+    {
+      "id": "fuertes.extras_esp.moros",
+      "name": {
+        "es": "Moros",
+        "en": "Moro rice"
+      },
+      "price": "$3.75"
+    }
+  ],
+  "lunch": [
+    {
+      "id": "fuertes.lunch.menestra-de-frejol-o-lenteja",
+      "name": {
+        "es": "Menestra de fréjol o lenteja",
+        "en": "Bean or lentil stew"
+      },
+      "sub": {
+        "es": "Con filete de pollo, carne o pescado apanado, arroz y maduro o patacón.",
+        "en": "With breaded chicken, beef or fish fillet, rice and ripe plantain or patacón."
+      }
+    },
+    {
+      "id": "fuertes.lunch.bistec-de-carne-pollo-o-higado",
+      "name": {
+        "es": "Bistec de carne, pollo o hígado",
+        "en": "Beef, chicken or liver steak"
+      },
+      "sub": {
+        "es": "Con arroz y aguacate, maduro o patacón.",
+        "en": "With rice and avocado, ripe plantain or patacón."
+      }
+    },
+    {
+      "id": "fuertes.lunch.seco-de-pollo-pieza-del-dia",
+      "name": {
+        "es": "Seco de pollo (pieza del día)",
+        "en": "Chicken stew (dish of the day)"
+      },
+      "sub": {
+        "es": "Con arroz y aguacate, maduro o patacón.",
+        "en": "With rice and avocado, ripe plantain or patacón."
+      }
+    },
+    {
+      "id": "fuertes.lunch.cazuela-de-atun-procesado",
+      "name": {
+        "es": "Cazuela de atún procesado",
+        "en": "Processed tuna cazuela"
+      },
+      "sub": {
+        "es": "Con arroz y maduro o patacón.",
+        "en": "With rice and ripe plantain or patacón."
+      }
+    },
+    {
+      "id": "fuertes.lunch.guatita-lunch",
+      "name": {
+        "es": "Guatita lunch",
+        "en": "Tripe stew lunch"
+      },
+      "sub": {
+        "es": "Con arroz y aguacate, maduro o patacón.",
+        "en": "With rice and avocado, ripe plantain or patacón."
+      }
+    }
+  ],
+  "lunch_hero": {
+    "id": "fuertes.lunch.hero_image",
+    "label": "Foto Menú Lunch",
+    "image": "images/hero/menu-lunch.jpg"
+  },
+  "extras_lunch": [
+    {
+      "id": "fuertes.extras_lunch.maduro",
+      "name": {
+        "es": "Maduro",
+        "en": "Ripe plantain"
+      },
+      "price": "$2.00"
+    },
+    {
+      "id": "fuertes.extras_lunch.maduro-con-queso",
+      "name": {
+        "es": "Maduro con queso",
+        "en": "Ripe plantain with cheese"
+      },
+      "price": "$3.00"
+    },
+    {
+      "id": "fuertes.extras_lunch.patacon",
+      "name": {
+        "es": "Patacón",
+        "en": "Patacón"
+      },
+      "price": "$2.00"
+    },
+    {
+      "id": "fuertes.extras_lunch.patacon-con-queso",
+      "name": {
+        "es": "Patacón con queso",
+        "en": "Patacón with cheese"
+      },
+      "price": "$3.00"
+    },
+    {
+      "id": "fuertes.extras_lunch.huevos-revueltos-fritos-bien-fritos",
+      "name": {
+        "es": "Huevos revueltos / fritos / bien fritos",
+        "en": "Scrambled / fried / well-fried eggs"
+      },
+      "price": "$1.80"
+    },
+    {
+      "id": "fuertes.extras_lunch.aguacate",
+      "name": {
+        "es": "Aguacate",
+        "en": "Avocado"
+      },
+      "price": "$1.50"
+    },
+    {
+      "id": "fuertes.extras_lunch.chicharron",
+      "name": {
+        "es": "Chicharrón",
+        "en": "Crispy pork rind"
+      },
+      "price": "$2.25"
+    },
+    {
+      "id": "fuertes.extras_lunch.guatita",
+      "name": {
+        "es": "Guatita",
+        "en": "Tripe stew"
+      },
+      "price": "$3.75"
+    },
+    {
+      "id": "fuertes.extras_lunch.menestra",
+      "name": {
+        "es": "Menestra",
+        "en": "Lentil stew"
+      },
+      "price": "$3.50"
+    },
+    {
+      "id": "fuertes.extras_lunch.salsa-de-queso",
+      "name": {
+        "es": "Salsa de queso",
+        "en": "Cheese sauce"
+      },
+      "price": "$1.50"
+    },
+    {
+      "id": "fuertes.extras_lunch.pollo-mechado",
+      "name": {
+        "es": "Pollo mechado",
+        "en": "Shredded chicken"
+      },
+      "price": "$3.90"
+    },
+    {
+      "id": "fuertes.extras_lunch.carne-mechada",
+      "name": {
+        "es": "Carne mechada",
+        "en": "Shredded beef"
+      },
+      "price": "$3.90"
+    },
+    {
+      "id": "fuertes.extras_lunch.filete-de-carne-pollo",
+      "name": {
+        "es": "Filete de carne / pollo",
+        "en": "Beef / chicken fillet"
+      },
+      "price": "$4.24"
+    },
+    {
+      "id": "fuertes.extras_lunch.salsa-de-camaron",
+      "name": {
+        "es": "Salsa de camarón",
+        "en": "Shrimp sauce"
+      },
+      "price": "$4.75"
+    },
+    {
+      "id": "fuertes.extras_lunch.chifles",
+      "name": {
+        "es": "Chifles",
+        "en": "Plantain chips"
+      },
+      "price": "$0.75"
+    },
+    {
+      "id": "fuertes.extras_lunch.queso",
+      "name": {
+        "es": "Queso",
+        "en": "Cheese"
+      },
+      "price": "$1.00"
+    },
+    {
+      "id": "fuertes.extras_lunch.arroz",
+      "name": {
+        "es": "Arroz",
+        "en": "Rice"
+      },
+      "price": "$1.75"
+    },
+    {
+      "id": "fuertes.extras_lunch.moros",
+      "name": {
+        "es": "Moros",
+        "en": "Moro rice"
+      },
+      "price": "$3.75"
+    }
+  ]
+}

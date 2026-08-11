@@ -1,0 +1,525 @@
+backend:
+  name: github
+  repo: TU-USUARIO-GITHUB/monobolon-menu
+  branch: main
+  base_url: PEGAR_AQUI_LO_QUE_TE_DA_DECAPBRIDGE
+media_folder: images/uploads
+public_folder: /images/uploads
+locale: es
+collections:
+- name: menu
+  label: Menú MonoBolón
+  files:
+  - name: bolones_tigrillos
+    label: Bolones y Tigrillos
+    file: content/bolones_tigrillos.json
+    fields:
+    - label: Masas de Bolón (Verde / Maduro / Pintón)
+      name: masas_bolones
+      widget: list
+      fields:
+      - label: Nombre
+        name: name
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Descripción
+        name: desc
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Nota
+        name: footer
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Foto
+        name: image
+        widget: image
+        required: false
+      summary: '{{fields.name.es}}'
+    - label: Precios Bolón (entero / media)
+      name: precios_bolones
+      widget: list
+      fields:
+      - label: Nombre
+        name: name
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Precio Entero
+        name: entero
+        widget: string
+      - label: Precio Media
+        name: media
+        widget: string
+      summary: '{{fields.name.es}}'
+    - label: Tunea tu Bolón (toppings)
+      name: tunea_bolon
+      widget: list
+      fields:
+      - label: Nombre
+        name: name
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Precio
+        name: price
+        widget: string
+      summary: '{{fields.name.es}}'
+    - label: Masas de Tigrillo
+      name: masas_tigrillo
+      widget: list
+      fields:
+      - label: Nombre
+        name: name
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Descripción
+        name: desc
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Nota
+        name: footer
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Foto
+        name: image
+        widget: image
+        required: false
+      summary: '{{fields.name.es}}'
+    - label: Precios Tigrillo
+      name: precios_tigrillo
+      widget: list
+      fields:
+      - label: Nombre
+        name: name
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Precio
+        name: price
+        widget: string
+      summary: '{{fields.name.es}}'
+    - label: Tunea tu Tigrillo (toppings)
+      name: tunea_tigrillo
+      widget: list
+      fields:
+      - label: Nombre
+        name: name
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Precio
+        name: price
+        widget: string
+      summary: '{{fields.name.es}}'
+  - name: desayunos
+    label: Desayunos
+    file: content/desayunos.json
+    fields:
+    - label: Masas (fotos en Desayunos)
+      name: masas
+      widget: list
+      fields:
+      - label: Nombre
+        name: name
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Descripción
+        name: desc
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Nota
+        name: footer
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Foto
+        name: image
+        widget: image
+        required: false
+      summary: '{{fields.name.es}}'
+    - label: Desayuno Picaditas (combos)
+      name: desayuno_picaditas_combo
+      widget: list
+      fields:
+      - label: Nombre
+        name: name
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Precio
+        name: price
+        widget: string
+      summary: '{{fields.name.es}}'
+    - label: Desayunos por tipo (MonoBolón / Trigrillo)
+      name: desayunos
+      widget: list
+      fields:
+      - label: Nombre
+        name: name
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Precios
+        name: precios
+        widget: list
+        fields:
+        - label: Nombre
+          name: name
+          widget: object
+          fields:
+          - label: Español
+            name: es
+            widget: string
+          - label: Inglés
+            name: en
+            widget: string
+        - label: Precio
+          name: price
+          widget: string
+      summary: '{{fields.name.es}}'
+  - name: fuertes
+    label: Platos Fuertes
+    file: content/fuertes.json
+    fields:
+    - label: Especialidades de la Casa
+      name: especiales
+      widget: list
+      fields:
+      - label: Nombre
+        name: badge
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Foto
+        name: image
+        widget: image
+        required: false
+      - label: Aviso destacado (ej. "Agrega Salsa 4 Quesos por $3.45")
+        name: upsell
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Variantes / opciones
+        name: lines
+        widget: list
+        fields:
+        - label: Nombre
+          name: name
+          widget: object
+          fields:
+          - label: Español
+            name: es
+            widget: string
+          - label: Inglés
+            name: en
+            widget: string
+        - label: Precio
+          name: price
+          widget: string
+      summary: '{{fields.badge.es}}'
+    - label: Extras — Especialidades de la Casa
+      name: extras_especialidades
+      widget: list
+      fields:
+      - label: Nombre
+        name: name
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Precio
+        name: price
+        widget: string
+      summary: '{{fields.name.es}}'
+    - label: Menú Lunch (platos)
+      name: lunch
+      widget: list
+      fields:
+      - label: Nombre
+        name: name
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Detalle
+        name: sub
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      summary: '{{fields.name.es}}'
+    - label: Foto del Menú Lunch
+      name: lunch_hero
+      widget: object
+      fields:
+      - label: Etiqueta
+        name: label
+        widget: string
+      - label: Foto
+        name: image
+        widget: image
+        required: false
+    - label: Extras — Menú Lunch
+      name: extras_lunch
+      widget: list
+      fields:
+      - label: Nombre
+        name: name
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Precio
+        name: price
+        widget: string
+      summary: '{{fields.name.es}}'
+  - name: picadas
+    label: Picadas
+    file: content/picadas.json
+    fields:
+    - label: Picaditas (platos con foto)
+      name: picaditas_platos
+      widget: list
+      fields:
+      - label: Nombre
+        name: name
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Precio
+        name: price
+        widget: string
+      - label: Foto
+        name: image
+        widget: image
+        required: false
+      summary: '{{fields.name.es}}'
+    - label: Picaditas (precios sueltos)
+      name: picaditas_precios
+      widget: list
+      fields:
+      - label: Nombre
+        name: name
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Precio
+        name: price
+        widget: string
+      summary: '{{fields.name.es}}'
+    - label: Torta de Verde
+      name: torta
+      widget: list
+      fields:
+      - label: Nombre
+        name: name
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Precio
+        name: price
+        widget: string
+      summary: '{{fields.name.es}}'
+  - name: bebidas
+    label: Bebidas
+    file: content/bebidas.json
+    fields:
+    - label: Bebidas Frías y Jugos
+      name: frias
+      widget: list
+      fields:
+      - label: Nombre
+        name: name
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Precio
+        name: price
+        widget: string
+      summary: '{{fields.name.es}}'
+    - label: Bebidas Calientes
+      name: calientes
+      widget: list
+      fields:
+      - label: Nombre
+        name: name
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Precio
+        name: price
+        widget: string
+      summary: '{{fields.name.es}}'
+    - label: Cócteles Clásicos
+      name: cocteles_clasicos
+      widget: list
+      fields:
+      - label: Nombre
+        name: name
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      - label: Precio
+        name: price
+        widget: string
+      - label: Descripción
+        name: desc
+        widget: object
+        fields:
+        - label: Español
+          name: es
+          widget: string
+        - label: Inglés
+          name: en
+          widget: string
+      summary: '{{fields.name.es}}'
+    - label: Foto de Jugos Naturales
+      name: frias_hero
+      widget: object
+      fields:
+      - label: Etiqueta
+        name: label
+        widget: string
+      - label: Foto
+        name: image
+        widget: image
+        required: false
