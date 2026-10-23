@@ -6,10 +6,11 @@
 //   GET  /api/img/:key        público
 //   GET  /api/history         owner
 //   POST /api/restore         owner  { key }
-import { createHmac, timingSafeEqual, createHash, randomBytes } from 'node:crypto';
+import { createHmac, timingSafeEqual, createHash, randomBytes, scryptSync } from 'node:crypto';
 
 const MENU_KEYS = ['bolones_tigrillos', 'desayunos', 'fuertes', 'picadas', 'bebidas'];
 const SESSION_HOURS = 12;
+const DEFAULT_STAFF_PIN = '2026';
 const MAX_FAILS = 5;
 const LOCK_MIN = 15;
 const MAX_IMG_BYTES = 4 * 1024 * 1024;
@@ -34,7 +35,7 @@ function sign(payload, env) {
   const mac = createHmac('sha256', secretFrom(env)).update(body).digest('base64url');
   return `${body}.${mac}`;
 }
-function verify(token, env, nowMs = Date.now()) {
+function verify(token, env, nowMs = Date.now(), ownerV = 0) {
   if (!token || typeof token !== 'string' || !token.includes('.')) return null;
   const [body, mac] = token.split('.');
   const good = createHmac('sha256', secretFrom(env)).update(body).digest('base64url');
@@ -44,9 +45,11 @@ function verify(token, env, nowMs = Date.now()) {
     const p = JSON.parse(Buffer.from(body, 'base64url').toString('utf8'));
     if (!p.e || p.e < nowMs) return null;
     if (p.r !== 'owner' && p.r !== 'staff') return null;
+    if (p.r === 'owner' && (p.pv || 0) !== ownerV) return null;
     return p;
   } catch { return null; }
 }
+function hashPin(pin, salt) { return scryptSync(String(pin), salt, 32).toString('hex'); }
 function safeEq(a, b) {
   const x = createHash('sha256').update(String(a)).digest();
   const y = createHash('sha256').update(String(b)).digest();
@@ -131,9 +134,17 @@ function mergeStaff(stored, submitted) {
 
 // ---------- fábrica del handler (inyectable para pruebas) ----------
 export function createHandler({ env, menuStore, imgStore, loadBaseline, now = () => Date.now() }) {
-  const authOf = (req) => {
+  const staffPin = () => env.STAFF_PIN || DEFAULT_STAFF_PIN;
+  const getOwnerRec = async () => (await menuStore.get('owner-pin', { type: 'json' })) || null;
+  const authOf = async (req) => {
     const h = req.headers.get('authorization') || '';
-    return verify(h.startsWith('Bearer ') ? h.slice(7) : '', env, now());
+    const rec = await getOwnerRec();
+    return verify(h.startsWith('Bearer ') ? h.slice(7) : '', env, now(), rec ? rec.v : 0);
+  };
+  const ownerMatches = async (pin) => {
+    const rec = await getOwnerRec();
+    if (rec) return safeEq(hashPin(pin, rec.salt), rec.hash);
+    return !!env.OWNER_PIN && safeEq(pin, env.OWNER_PIN);
   };
   const ipOf = (req) =>
     (req.headers.get('x-nf-client-connection-ip') || req.headers.get('x-forwarded-for') || 'unknown').split(',')[0].trim();
@@ -177,8 +188,8 @@ export function createHandler({ env, menuStore, imgStore, loadBaseline, now = ()
 
       // ---- login ----
       if (path === '/api/login' && method === 'POST') {
-        if (!env.OWNER_PIN || !env.STAFF_PIN) {
-          return json({ error: 'Los PIN aún no están configurados en Netlify (OWNER_PIN y STAFF_PIN).' }, 503);
+        if (!env.OWNER_PIN && !(await getOwnerRec())) {
+          return json({ error: 'El PIN del dueño aún no está configurado en Netlify (OWNER_PIN).' }, 503);
         }
         const ip = ipOf(req);
         const rlKey = `rl-${createHash('sha256').update(ip).digest('hex').slice(0, 24)}`;
@@ -191,8 +202,8 @@ export function createHandler({ env, menuStore, imgStore, loadBaseline, now = ()
         try { body = await req.json(); } catch {}
         const pin = String(body.pin || '');
         let role = null;
-        if (pin && safeEq(pin, env.OWNER_PIN)) role = 'owner';
-        else if (pin && safeEq(pin, env.STAFF_PIN)) role = 'staff';
+        if (pin && (await ownerMatches(pin))) role = 'owner';
+        else if (pin && safeEq(pin, staffPin())) role = 'staff';
         if (!role) {
           const n = (rl.n || 0) + 1;
           const rec = n >= MAX_FAILS ? { n: 0, until: now() + LOCK_MIN * 60000 } : { n, until: 0 };
@@ -201,11 +212,12 @@ export function createHandler({ env, menuStore, imgStore, loadBaseline, now = ()
         }
         if (rl.n) await menuStore.setJSON(rlKey, { n: 0, until: 0 });
         const exp = now() + SESSION_HOURS * 3600 * 1000;
-        return json({ token: sign({ r: role, e: exp }, env), role, exp });
+        const orec = await getOwnerRec();
+        return json({ token: sign({ r: role, e: exp, pv: role === 'owner' ? (orec ? orec.v : 0) : 0 }, env), role, exp });
       }
 
       // ---- autenticado ----
-      const auth = authOf(req);
+      const auth = await authOf(req);
       if (!auth) return json({ error: 'Sesión vencida. Vuelve a ingresar tu PIN.' }, 401);
 
       if (path === '/api/menu' && method === 'PUT') {
@@ -242,6 +254,20 @@ export function createHandler({ env, menuStore, imgStore, loadBaseline, now = ()
       }
 
       // ---- solo dueño ----
+      if (path === '/api/change-pin' && method === 'POST') {
+        if (auth.r !== 'owner') return json({ error: 'Solo el dueño' }, 403);
+        const body = await req.json().catch(() => ({}));
+        const cur = String(body.current || ''), np = String(body.newPin || '');
+        if (!(await ownerMatches(cur))) return json({ error: 'El PIN actual no es correcto' }, 401);
+        if (!/^\d{4,8}$/.test(np)) return json({ error: 'El PIN nuevo debe tener de 4 a 8 números' }, 400);
+        if (safeEq(np, staffPin())) return json({ error: 'Ese PIN ya lo usa el equipo. Elige otro.' }, 400);
+        const prev = await getOwnerRec();
+        const salt = randomBytes(16).toString('hex');
+        const rec = { salt, hash: hashPin(np, salt), v: ((prev && prev.v) || 0) + 1 };
+        await menuStore.setJSON('owner-pin', rec);
+        const exp = now() + SESSION_HOURS * 3600 * 1000;
+        return json({ ok: true, token: sign({ r: 'owner', e: exp, pv: rec.v }, env), role: 'owner', exp });
+      }
       if (path === '/api/history' && method === 'GET') {
         if (auth.r !== 'owner') return json({ error: 'Solo el dueño' }, 403);
         const { blobs } = await menuStore.list({ prefix: 'h-' });
@@ -278,7 +304,7 @@ export default async (req) => {
     const { getStore } = await import('@netlify/blobs');
     const env = {
       OWNER_PIN: process.env.OWNER_PIN,
-      STAFF_PIN: process.env.STAFF_PIN,
+      STAFF_PIN: process.env.STAFF_PIN,   // opcional; por defecto 2026
       SESSION_SECRET: process.env.SESSION_SECRET,
     };
     _handler = createHandler({

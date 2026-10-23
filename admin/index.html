@@ -205,6 +205,7 @@ textarea.inp{min-height:84px;resize:vertical}
       <h1>Editor de carta</h1>
       <span class="role" id="role"></span>
       <button class="btn sm" id="bHist"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg><span class="hide-sm">Historial</span></button>
+      <button class="btn sm" id="bPin"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span class="hide-sm">Cambiar PIN</span></button>
       <a class="btn sm" id="bView" href="../" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span class="hide-sm">Ver carta</span></a>
       <button class="btn sm" id="bOut">Salir</button>
     </div>
@@ -393,7 +394,7 @@ async function enter(){
   snapshotMaps();
   $('#login').classList.add('hide');$('#app').classList.remove('hide');
   const r=$('#role');r.textContent=isOwner()?'Dueño':'Equipo';r.className='role '+(isOwner()?'':'staff');
-  $('#bHist').classList.toggle('hide',!isOwner());
+  $('#bHist').classList.toggle('hide',!isOwner());$('#bPin').classList.toggle('hide',!isOwner());
   buildTabs();render();
 }
 
@@ -776,6 +777,26 @@ $('#bHist').addEventListener('click',async()=>{
         })},'Restaurar')));
     });
   }catch(e){body.replaceChildren(h('p',{style:'color:var(--red)'},e.message));}
+});
+
+$('#bPin').addEventListener('click',()=>{
+  const mk=ph=>h('input',{class:'inp',type:'password',inputmode:'numeric',maxlength:'8',autocomplete:'off',placeholder:ph});
+  const cur=mk('PIN actual'),n1=mk('PIN nuevo (4 a 8 números)'),n2=mk('Repite el PIN nuevo');
+  const body=h('div',{class:'sb'},
+    h('div',{class:'fld'},h('div',{class:'lb'},'PIN actual'),cur),
+    h('div',{class:'fld'},h('div',{class:'lb'},'PIN nuevo'),n1),
+    h('div',{class:'fld'},h('div',{class:'lb'},'Repite el PIN nuevo'),n2,h('div',{class:'hint'},'Es el PIN del dueño. El del equipo no cambia.')));
+  const save=async()=>{
+    if(!/^\d{4,8}$/.test(n1.value)){toast('El PIN nuevo debe tener de 4 a 8 números','err');return;}
+    if(n1.value!==n2.value){toast('Los PIN nuevos no coinciden','err');return;}
+    try{
+      const r=await req('/api/change-pin',{method:'POST',json:{current:cur.value,newPin:n1.value}});
+      session={token:r.token,role:r.role,exp:r.exp};store.set(session);closeModal();toast('PIN cambiado. Úsalo la próxima vez que entres.','ok');
+    }catch(e){ if(e.message!=='sesion') toast(e.message,'err'); }
+  };
+  scrim(h('div',{class:'sheet',style:'max-width:440px'},h('div',{class:'sh'},h('h3',{},'Cambiar PIN del dueño'),h('button',{class:'ibtn',onclick:closeModal,'aria-label':'Cerrar'},ico('x'))),body,
+    h('div',{class:'sf'},h('span',{class:'sp'}),h('button',{class:'btn',onclick:closeModal},'Cancelar'),h('button',{class:'btn gold',onclick:save},'Guardar PIN'))));
+  setTimeout(()=>cur.focus(),50);
 });
 
 /* ---------- arranque ---------- */
