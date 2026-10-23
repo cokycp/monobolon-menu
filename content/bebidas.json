@@ -182,6 +182,10 @@
       "desc": {
         "es": "Ron blanco, hierbabuena fresca machacada, lima, azúcar y un toque de soda. El clásico cubano que refresca cualquier noche.",
         "en": "White rum, fresh muddled mint, lime, sugar and a splash of soda. The Cuban classic that cools down any night."
+      },
+      "ings": {
+        "es": "Ron blanco, Hierbabuena, Lima, Soda",
+        "en": "White rum, Mint, Lime, Soda"
       }
     },
     {
@@ -194,6 +198,10 @@
       "desc": {
         "es": "Cachaça brasileña macerada con limón y azúcar directamente en el vaso. Rústica, directa y con carácter.",
         "en": "Brazilian cachaça muddled with lime and sugar right in the glass. Rustic, direct and full of character."
+      },
+      "ings": {
+        "es": "Cachaça, Limón, Azúcar",
+        "en": "Cachaça, Lime, Sugar"
       }
     },
     {
@@ -206,6 +214,10 @@
       "desc": {
         "es": "Vodka, ginger beer picante y un chorro de lima, servido en su clásico jarro de cobre. Burbujeante y refrescante.",
         "en": "Vodka, spicy ginger beer and a splash of lime, served in its classic copper mug. Bubbly and refreshing."
+      },
+      "ings": {
+        "es": "Vodka, Ginger beer, Lima",
+        "en": "Vodka, Ginger beer, Lime"
       }
     },
     {
@@ -218,6 +230,10 @@
       "desc": {
         "es": "Whisky bourbon, azúcar, bitter de angostura y una twist de naranja sobre hielo. El padre de todos los cócteles.",
         "en": "Bourbon whiskey, sugar, angostura bitters and an orange twist over ice. The father of all cocktails."
+      },
+      "ings": {
+        "es": "Bourbon, Azúcar, Bitter angostura, Naranja",
+        "en": "Bourbon, Sugar, Angostura bitters, Orange"
       }
     },
     {
@@ -230,6 +246,10 @@
       "desc": {
         "es": "Gin, Campari y vermouth rosso en partes iguales. Amargo, elegante y sin miedo a decirlo.",
         "en": "Gin, Campari and rosso vermouth in equal parts. Bitter, elegant and unafraid to say so."
+      },
+      "ings": {
+        "es": "Gin, Campari, Vermouth Rosso",
+        "en": "Gin, Campari, Vermouth Rosso"
       }
     },
     {
@@ -242,6 +262,10 @@
       "desc": {
         "es": "Tequila, Triple Sec y jugo de limón fresco, servida con o sin escarcha de sal. El clásico mexicano por excelencia.",
         "en": "Tequila, Triple Sec and fresh lime juice, served with or without a salt rim. The Mexican classic, no explanation needed."
+      },
+      "ings": {
+        "es": "Tequila, Triple Sec, Limón",
+        "en": "Tequila, Triple Sec, Lime"
       }
     },
     {
@@ -254,6 +278,10 @@
       "desc": {
         "es": "Ron blanco, crema de coco y jugo de piña, licuados con hielo hasta quedar cremosa. Playa en cada sorbo.",
         "en": "White rum, coconut cream and pineapple juice, blended with ice until creamy. Beach in every sip."
+      },
+      "ings": {
+        "es": "Ron blanco, Crema de coco, Piña",
+        "en": "White rum, Coconut cream, Pineapple"
       }
     }
   ],
